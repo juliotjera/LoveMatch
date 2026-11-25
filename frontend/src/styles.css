@@ -285,6 +285,31 @@ fieldset.champ > legend {
   border-color: var(--erreur);
 }
 
+/* mot de passe : bouton « Afficher » dans le champ */
+.mot-de-passe {
+  position: relative;
+}
+
+.mot-de-passe .saisie {
+  padding-inline-end: 104px;
+}
+
+.mot-de-passe .voir {
+  position: absolute;
+  inset-inline-end: 4px;
+  top: 4px;
+  bottom: 4px;
+  min-width: 92px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--jacaranda-pale);
+  color: var(--jacaranda-fonce);
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
 textarea.saisie {
   min-height: 120px;
   resize: vertical;

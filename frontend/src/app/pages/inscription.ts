@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { AbstractControl, NonNullableFormBuilder, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { Api } from '../core/api';
@@ -7,6 +7,7 @@ import { messageErreur } from '../core/intercepteur';
 import { Genre, GenreRecherche, Ville } from '../core/modeles';
 import { Session } from '../core/session';
 import { CadreVisiteur } from '../ui/cadre-visiteur';
+import { ChoixVille } from '../ui/choix-ville';
 
 function majeur(controle: AbstractControl): ValidationErrors | null {
   if (!controle.value) {
@@ -21,7 +22,7 @@ function majeur(controle: AbstractControl): ValidationErrors | null {
 @Component({
   selector: 'lm-inscription',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ReactiveFormsModule, RouterLink, CadreVisiteur],
+  imports: [ReactiveFormsModule, RouterLink, CadreVisiteur, ChoixVille],
   template: `
     <lm-cadre-visiteur [titre]="t('inscription.titre')" [sousTitre]="t('inscription.sous')">
       <form [formGroup]="formulaire" (ngSubmit)="envoyer()" novalidate class="formulaire">
@@ -82,17 +83,8 @@ function majeur(controle: AbstractControl): ValidationErrors | null {
           }
         </fieldset>
 
-        <div class="champ">
-          <label for="ville">{{ t('champ.ville') }}</label>
-          <select id="ville" class="saisie" formControlName="villeId" aria-describedby="ville-aide"
-            [attr.aria-invalid]="invalide('villeId')">
-            <option [ngValue]="0" disabled>{{ t('champ.villeChoisir') }}</option>
-            @for (v of villes(); track v.id) {
-              <option [ngValue]="v.id">{{ v.nom }} ({{ v.region }})</option>
-            }
-          </select>
-          <p id="ville-aide" class="aide">{{ t('inscription.villeAide') }}</p>
-        </div>
+        <lm-choix-ville [libelle]="t('champ.ville')" [aide]="t('inscription.villeAide')" [erreur]="!!invalide('villeId')"
+          [ville]="ville()" (villeChange)="choisirVille($event)" />
 
         <div class="champ">
           <label for="email">{{ t('champ.email') }}</label>
@@ -104,8 +96,13 @@ function majeur(controle: AbstractControl): ValidationErrors | null {
         </div>
         <div class="champ">
           <label for="mdp">{{ t('champ.motDePasse') }}</label>
-          <input id="mdp" class="saisie" type="password" formControlName="motDePasse" autocomplete="new-password"
-            aria-describedby="mdp-aide" [attr.aria-invalid]="invalide('motDePasse')" />
+          <div class="mot-de-passe">
+            <input id="mdp" class="saisie" [type]="voirMdp() ? 'text' : 'password'" formControlName="motDePasse"
+              autocomplete="new-password" aria-describedby="mdp-aide" [attr.aria-invalid]="invalide('motDePasse')" />
+            <button type="button" class="voir" [attr.aria-pressed]="voirMdp()" (click)="voirMdp.set(!voirMdp())">
+              {{ voirMdp() ? t('mdp.masquer') : t('mdp.afficher') }}
+            </button>
+          </div>
           <p id="mdp-aide" [class]="invalide('motDePasse') ? 'erreur-champ' : 'aide'">{{ t('inscription.mdpAide') }}</p>
         </div>
 
@@ -131,6 +128,7 @@ function majeur(controle: AbstractControl): ValidationErrors | null {
     }
     .deux {
       display: grid;
+      align-items: start;
       gap: 20px;
     }
     .accord {
@@ -156,7 +154,7 @@ function majeur(controle: AbstractControl): ValidationErrors | null {
     }
   `,
 })
-export class Inscription implements OnInit {
+export class Inscription {
   private readonly fb = inject(NonNullableFormBuilder);
   private readonly api = inject(Api);
   private readonly session = inject(Session);
@@ -164,11 +162,12 @@ export class Inscription implements OnInit {
   private readonly i18n = inject(I18n);
   protected readonly t = this.i18n.t;
 
-  protected readonly villes = signal<Ville[]>([]);
   protected readonly occupe = signal(false);
   protected readonly erreur = signal('');
   protected readonly essaye = signal(false);
-  protected readonly genres: Genre[] = ['FEMME', 'HOMME'];
+  protected readonly genres: Genre[] = ['FEMME', 'HOMME', 'NON_BINAIRE'];
+  protected readonly voirMdp = signal(false);
+  protected readonly ville = signal<Ville | null>(null);
   protected readonly recherches: GenreRecherche[] = ['HOMMES', 'FEMMES', 'TOUS'];
   protected readonly aujourdhui = new Date().toISOString().slice(0, 10);
 
@@ -184,8 +183,10 @@ export class Inscription implements OnInit {
     accord: [false, Validators.requiredTrue],
   });
 
-  async ngOnInit() {
-    this.villes.set(await this.api.villes());
+  choisirVille(v: Ville | null) {
+    this.ville.set(v);
+    this.formulaire.controls.villeId.setValue(v?.id ?? 0);
+    this.formulaire.controls.villeId.markAsTouched();
   }
 
   invalide(champ: keyof typeof this.formulaire.controls) {

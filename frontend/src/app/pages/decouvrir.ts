@@ -29,7 +29,7 @@ type Etat = 'chargement' | 'pret' | 'incomplet' | 'erreur';
           <select id="distance" class="saisie filtre" [value]="distanceMax() ?? ''" (change)="changerDistance($event)">
             <option value="">{{ t('decouvrir.distanceToutes') }}</option>
             @for (d of distances; track d) {
-              <option [value]="d">{{ t('decouvrir.distanceMax', { km: d }) }}</option>
+              <option [value]="d">{{ t('decouvrir.distanceMax', { km: i18n.nombre(d) }) }}</option>
             }
           </select>
           <button type="button" class="pastille" [attr.aria-pressed]="interetsCommuns()" (click)="basculerInterets()">
@@ -72,7 +72,7 @@ type Etat = 'chargement' | 'pret' | 'incomplet' | 'erreur';
                   [alt]="t('decouvrir.photoDe', { prenom: s.profil.prenom, n: photo() + 1, total: nbPhotos() })" />
                 <div class="sur-photo" aria-hidden="true">
                   <span class="sur-nom">{{ s.profil.prenom }}, {{ s.profil.age }}</span>
-                  <span>{{ t('decouvrir.lieu', { ville: s.profil.ville, km: s.score.distanceKm }) }}</span>
+                  <span>{{ lieu(s) }}</span>
                 </div>
                 @if (nbPhotos() > 1) {
                   <div class="points" aria-hidden="true">
@@ -90,7 +90,7 @@ type Etat = 'chargement' | 'pret' | 'incomplet' | 'erreur';
                   <h2 [id]="'nom-' + s.profil.id">{{ s.profil.prenom }}, {{ s.profil.age }}</h2>
                   <p class="lieu">
                     <lm-icone nom="lieu" [taille]="18" />
-                    {{ t('decouvrir.lieu', { ville: s.profil.ville, km: s.score.distanceKm }) }}
+                    {{ lieu(s) }}
                   </p>
                   <p class="cherche">{{ t('recherche.' + s.profil.recherche) }}</p>
                   <p class="parle">{{ t('decouvrir.parle', { langues: i18nPublic.listeLangues(s.profil.langues) }) }}</p>
@@ -469,14 +469,14 @@ type Etat = 'chargement' | 'pret' | 'incomplet' | 'erreur';
 export class Decouvrir implements OnInit {
   private readonly api = inject(Api);
   private readonly avis = inject(Avertisseur);
-  private readonly i18n = inject(I18n);
+  protected readonly i18n = inject(I18n);
   private readonly session = inject(Session);
   protected readonly t = this.i18n.t;
   protected readonly libelle = this.i18n.interet;
   protected readonly i18nPublic = this.i18n;
   protected readonly moi = this.session.moi;
 
-  protected readonly distances = [25, 50, 100, 200, 500];
+  protected readonly distances = [25, 50, 100, 200, 500, 1000, 5000];
   protected readonly etat = signal<Etat>('chargement');
   protected readonly erreur = signal('');
   protected readonly file = signal<Suggestion[]>([]);
@@ -506,6 +506,13 @@ export class Decouvrir implements OnInit {
   async ngOnInit() {
     await this.recharger();
     this.api.likesRecus().then((r) => this.likesRecus.set(r.nombre), () => undefined);
+  }
+
+  // « Paris, France, à 8 735 km » : le pays n'est précisé que s'il diffère du mien
+  lieu(s: Suggestion) {
+    const monPays = this.session.moi()?.ville.pays;
+    const ville = s.profil.pays === monPays ? s.profil.ville : this.i18n.joindre(s.profil.ville, this.i18n.nomPays(s.profil.pays));
+    return this.t('decouvrir.lieu', { ville, km: this.i18n.nombre(s.score.distanceKm) });
   }
 
   estCommun(code: string) {

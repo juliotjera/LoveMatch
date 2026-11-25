@@ -7,6 +7,6 @@ import java.util.List;
 
 // Ce que les autres membres voient : ni nom de famille, ni e-mail, ni date de naissance exacte
 public record ProfilPublicResponse(
-    Long id, String prenom, int age, Genre genre, String ville, String region, String bio,
+    Long id, String prenom, int age, Genre genre, String ville, String region, String pays, String bio,
     Recherche recherche, List<InteretResponse> interets, List<Langue> langues, List<Long> photos
 ) {}

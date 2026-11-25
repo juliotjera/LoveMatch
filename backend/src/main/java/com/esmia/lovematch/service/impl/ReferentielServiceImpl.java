@@ -6,7 +6,9 @@ import com.esmia.lovematch.mapper.ProfilMapper;
 import com.esmia.lovematch.repository.InteretRepository;
 import com.esmia.lovematch.repository.VilleRepository;
 import com.esmia.lovematch.service.ReferentielService;
+import db.migration.V4__Villes_du_monde;
 import java.util.List;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,8 +27,12 @@ public class ReferentielServiceImpl implements ReferentielService {
     }
 
     @Override
-    public List<VilleResponse> villes() {
-        return villes.findAllByOrderByNomAsc().stream().map(mapper::ville).toList();
+    public List<VilleResponse> villes(String debut, int limite) {
+        String recherche = V4__Villes_du_monde.normaliser(debut == null ? "" : debut);
+        if (recherche.isEmpty()) {
+            return List.of();
+        }
+        return villes.rechercher(recherche + "%", PageRequest.of(0, limite)).stream().map(mapper::ville).toList();
     }
 
     @Override

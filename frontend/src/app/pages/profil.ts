@@ -8,6 +8,7 @@ import { messageErreur } from '../core/intercepteur';
 import { GenreRecherche, Interet, ProfilPublic, Recherche, Ville } from '../core/modeles';
 import { Session } from '../core/session';
 import { Icone } from '../ui/icone';
+import { ChoixVille } from '../ui/choix-ville';
 import { Photo } from '../ui/photo';
 
 const MAX_PHOTOS = 4;
@@ -15,7 +16,7 @@ const MAX_PHOTOS = 4;
 @Component({
   selector: 'lm-profil',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [FormsModule, Icone, Photo],
+  imports: [FormsModule, Icone, Photo, ChoixVille],
   template: `
     @if (moi(); as m) {
       <div class="page">
@@ -87,14 +88,8 @@ const MAX_PHOTOS = 4;
                   <p id="nom-aide" class="aide">{{ t('inscription.nomPrive') }}</p>
                 </div>
               </div>
-              <div class="champ">
-                <label for="ville">{{ t('champ.ville') }}</label>
-                <select id="ville" name="ville" class="saisie" [(ngModel)]="villeId">
-                  @for (v of villes(); track v.id) {
-                    <option [ngValue]="v.id">{{ v.nom }} ({{ v.region }})</option>
-                  }
-                </select>
-              </div>
+              <lm-choix-ville [libelle]="t('champ.ville')" [aide]="t('inscription.villeAide')" [erreur]="villeManquante()"
+                [(ville)]="ville" />
               <fieldset class="champ">
                 <legend>{{ t('champ.recherche') }}</legend>
                 <div class="pastilles">
@@ -166,8 +161,12 @@ const MAX_PHOTOS = 4;
                 </div>
               </fieldset>
               <div class="champ">
-                <label for="rayon">{{ t('profil.rayon') }} <output for="rayon">{{ rayonKm }} km</output></label>
-                <input id="rayon" name="rayon" type="range" min="10" max="1000" step="10" [(ngModel)]="rayonKm" class="curseur" />
+                <label for="rayon">{{ t('profil.rayon') }}</label>
+                <select id="rayon" name="rayon" class="saisie" [(ngModel)]="rayonKm">
+                  @for (r of rayons(); track r) {
+                    <option [ngValue]="r">{{ r >= 20000 ? t('profil.rayonPartout') : t('decouvrir.distanceMax', { km: i18n.nombre(r) }) }}</option>
+                  }
+                </select>
                 <p class="aide">{{ t('profil.rayonAide') }}</p>
               </div>
               @if (erreurPreferences()) {
@@ -185,7 +184,7 @@ const MAX_PHOTOS = 4;
               <ul class="bloques">
                 @for (b of bloques(); track b.id) {
                   <li>
-                    <span>{{ b.prenom }}, {{ b.age }} ({{ b.ville }})</span>
+                    <span>{{ b.prenom }}, {{ b.age }} ({{ i18n.joindre(b.ville, i18n.nomPays(b.pays)) }})</span>
                     <button type="button" class="btn btn-contour" (click)="debloquer(b)">{{ t('profil.debloquer') }}</button>
                   </li>
                 }
@@ -262,6 +261,7 @@ const MAX_PHOTOS = 4;
     }
     .deux {
       display: grid;
+      align-items: start;
       gap: 18px;
     }
     .grille-photos {
@@ -342,11 +342,6 @@ const MAX_PHOTOS = 4;
     .tranche .saisie {
       width: 92px;
     }
-    .curseur {
-      width: 100%;
-      accent-color: var(--jacaranda-fonce);
-      min-height: 32px;
-    }
     output {
       margin-inline-start: 6px;
       color: var(--jacaranda-fonce);
@@ -383,9 +378,12 @@ export class Profil implements OnInit {
   private readonly api = inject(Api);
   private readonly avis = inject(Avertisseur);
   private readonly router = inject(Router);
-  private readonly i18n = inject(I18n);
+  protected readonly i18n = inject(I18n);
   protected readonly session = inject(Session);
   protected readonly t = this.i18n.t;
+  // rayons proposés ; la valeur enregistrée est ajoutée si elle n'en fait pas partie
+  protected readonly rayons = () =>
+    [...new Set([10, 25, 50, 100, 200, 500, 1000, 5000, 20000, this.rayonKm])].sort((a, b) => a - b);
   protected readonly libelle = this.i18n.interet;
   protected readonly moi = this.session.moi;
 
@@ -394,7 +392,8 @@ export class Profil implements OnInit {
   protected readonly max = MAX_PHOTOS;
   protected readonly recherches: Recherche[] = ['RELATION_SERIEUSE', 'AMITIE', 'A_DECOUVRIR'];
   protected readonly genres: GenreRecherche[] = ['HOMMES', 'FEMMES', 'TOUS'];
-  protected readonly villes = signal<Ville[]>([]);
+  protected readonly ville = signal<Ville | null>(null);
+  protected readonly villeManquante = signal(false);
   protected readonly interets = signal<Interet[]>([]);
   protected readonly bloques = signal<ProfilPublic[]>([]);
   protected readonly choisis = signal<Set<number>>(new Set());
@@ -408,7 +407,6 @@ export class Profil implements OnInit {
 
   protected prenom = '';
   protected nom = '';
-  protected villeId = 0;
   protected recherche: Recherche = 'A_DECOUVRIR';
   protected bio = '';
   protected genreRecherche: GenreRecherche = 'TOUS';
@@ -417,8 +415,7 @@ export class Profil implements OnInit {
   protected rayonKm = 200;
 
   async ngOnInit() {
-    const [villes, interets, bloques] = await Promise.all([this.api.villes(), this.api.interets(), this.api.bloques()]);
-    this.villes.set(villes);
+    const [interets, bloques] = await Promise.all([this.api.interets(), this.api.bloques()]);
     this.interets.set(interets);
     this.bloques.set(bloques);
     await this.session.rafraichir();
@@ -435,7 +432,7 @@ export class Profil implements OnInit {
     }
     this.prenom = m.prenom;
     this.nom = m.nom;
-    this.villeId = m.ville.id;
+    this.ville.set(m.ville);
     this.recherche = m.recherche;
     this.bio = m.bio ?? '';
     this.choisis.set(new Set(m.interets.map((i) => i.id)));
@@ -476,6 +473,11 @@ export class Profil implements OnInit {
       this.erreurProfil.set(this.t('langues.min'));
       return;
     }
+    this.villeManquante.set(!this.ville());
+    if (!this.ville()) {
+      this.erreurProfil.set(this.t('ville.choisir'));
+      return;
+    }
     if (this.choisis().size < 3) {
       this.erreurProfil.set(this.t('profil.interetsMin'));
       return;
@@ -484,7 +486,7 @@ export class Profil implements OnInit {
     const etaitComplet = this.moi()?.profilComplet;
     try {
       const moi = await this.api.modifierProfil({
-        prenom: this.prenom.trim(), nom: this.nom.trim(), villeId: this.villeId, bio: this.bio.trim(),
+        prenom: this.prenom.trim(), nom: this.nom.trim(), villeId: this.ville()!.id, bio: this.bio.trim(),
         recherche: this.recherche, interets: [...this.choisis()], langues: [...this.languesChoisies()],
       });
       this.session.ouvrir(moi);

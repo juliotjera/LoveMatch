@@ -4,8 +4,8 @@ LoveMatch est né d'un sujet d'examen JSP de Licence 2 (« site de rencontre ave
 
 ## 1. Le produit
 
-1.1. **Pour qui.** Les personnes majeures qui vivent à Madagascar : étudiants, jeunes actifs, et les communautés qui y vivent sans parler malgache ni français (chinoise, indienne, comorienne, volontaires étrangers…).
-1.2. **Le problème.** Les applications de rencontre courantes classent les profils par photo et par un algorithme opaque ; elles ignorent la distance réelle entre les villes malgaches et la barrière de la langue.
+1.1. **Pour qui.** Né à Madagascar, ouvert au monde : les personnes majeures qui vivent à Madagascar (étudiants, jeunes actifs, communautés qui n'y parlent ni malgache ni français), la diaspora malgache, et toute personne ailleurs dans le monde.
+1.2. **Le problème.** Les applications de rencontre courantes classent les profils par photo et par un algorithme opaque ; elles ignorent la barrière de la langue, et celles qui sont locales oublient la diaspora.
 1.3. **La promesse.** Chaque suggestion montre un **score de compatibilité sur 100, expliqué critère par critère**, et ne propose que des personnes avec qui la discussion est possible : préférences réciproques, distance acceptée des deux côtés, au moins une langue commune.
 1.4. **Ce qui ne se négocie pas.** Majeurs uniquement ; on ne peut écrire qu'après un like réciproque ; nom de famille, e-mail et position jamais montrés ; blocage et signalement accessibles partout ; suppression complète du compte en un geste.
 
@@ -13,10 +13,10 @@ LoveMatch est né d'un sujet d'examen JSP de Licence 2 (« site de rencontre ave
 
 | Sujet d'origine (L2) | Version 2 |
 | --- | --- |
-| Profil : nom, prénom, âge, lieu, préférence de genre | Prénom (nom privé), âge, ville, bio, 3 à 8 centres d'intérêt, ce que l'on recherche, **langues parlées**, jusqu'à 4 photos |
+| Profil : nom, prénom, âge, lieu, préférence de genre (homme, femme) | Prénom (nom privé), âge, genre (femme, homme, **non binaire**), ville du monde, bio, 3 à 8 centres d'intérêt, ce que l'on recherche, **langues parlées**, jusqu'à 4 photos |
 | Score : âge, lieu, genre | **Score en cinq brins** : âge, distance réelle entre villes, intérêts communs, langues communes, intention ; détail affiché |
 | Préférence de genre vérifiée d'un seul côté | **Filtres réciproques** : genre, tranche d'âge, rayon et langue doivent convenir aux deux |
-| « Même ville » = points | Distance entre 34 villes de Madagascar (coordonnées, formule de haversine) et rayon choisi par chacun |
+| « Même ville » = points | Distance réelle entre **31 800 villes du monde** (GeoNames, formule de haversine), rayon choisi par chacun, de 10 km à « partout dans le monde » |
 | Un like envoie une notification | Like anonyme ; **match** si réciproque ; **messagerie en temps réel** ; notifications en direct |
 | Aucune sécurité | Mots de passe hachés, session en cookie HttpOnly, CSRF, limites de débit, blocage, signalement, modération |
 | Une langue | **Sept langues** : malagasy, français, et les cinq langues les plus parlées au monde (anglais, chinois, hindi, espagnol, arabe), arabe écrit de droite à gauche |
@@ -31,14 +31,14 @@ LoveMatch est né d'un sujet d'examen JSP de Licence 2 (« site de rencontre ave
 ## 4. Fonctionnalités
 
 ### 4.1. Compte
-4.1.1. Inscription : e-mail, mot de passe (8 caractères minimum), prénom, nom, date de naissance (18 ans minimum, contrôlé par le serveur), genre, ville, genre(s) recherché(s) ; la langue de l'interface devient la première langue parlée.
+4.1.1. Inscription : e-mail, mot de passe (8 caractères minimum, bouton « Afficher »), prénom, nom, date de naissance (18 ans minimum, contrôlé par le serveur), genre (femme, homme, non binaire), ville du monde choisie au fil de la frappe, genre(s) recherché(s) (hommes, femmes, tout le monde) ; la langue de l'interface devient la première langue parlée.
 4.1.2. Connexion par e-mail et mot de passe ; jeton JWT dans un cookie HttpOnly, SameSite=Strict ; déconnexion.
 4.1.3. Limitation des tentatives de connexion par adresse IP.
 4.1.4. Suppression du compte par le membre, avec toutes ses données (photos, likes, matchs, messages).
 
 ### 4.2. Profil
 4.2.1. Prénom, nom (jamais affiché aux autres), date de naissance (seul l'âge est affiché), genre, ville, bio (500 caractères), centres d'intérêt (3 à 8), ce que l'on recherche, langues parlées (1 à 5 parmi 12).
-4.2.2. Préférences : genre(s) recherché(s), tranche d'âge, rayon de recherche (10 à 1 000 km).
+4.2.2. Préférences : genre(s) recherché(s), tranche d'âge, rayon de recherche (de 10 km à « partout dans le monde »).
 4.2.3. Jusqu'à 4 photos, redimensionnées et réenregistrées par le serveur (les métadonnées cachées disparaissent) ; une photo principale. Sans photo, l'initiale du prénom s'affiche.
 4.2.4. Un profil sans bio, ou avec moins de trois centres d'intérêt, n'apparaît pas dans les suggestions et n'en reçoit pas.
 
@@ -84,13 +84,19 @@ LoveMatch est né d'un sujet d'examen JSP de Licence 2 (« site de rencontre ave
 4.9.3. Les erreurs renvoyées par l'API sont rédigées dans la langue de l'interface (en-tête Accept-Language).
 4.9.4. Chaque dictionnaire n'est téléchargé que lorsque sa langue est choisie.
 
-### 4.10. Application installable et Android
-4.10.1. PWA : installable depuis le navigateur, interface gardée sur l'appareil (ouverture hors réseau, mises à jour en arrière-plan, avis « nouvelle version prête »).
-4.10.2. Application Android (APK signé) qui ouvre le site en ligne, avec retour arrière natif et envoi de photos depuis la galerie ou l'appareil photo.
+### 4.10. International
+4.10.1. 31 800 villes de plus de 15 000 habitants (GeoNames) ; recherche au fil de la frappe sans tenir compte des accents ; pays affiché dans la langue de l'interface.
+4.10.2. Le pays d'une suggestion n'est précisé que s'il diffère du sien ; distances et nombres au format de la langue (« 8 755 km », « 8,755 km »).
+4.10.3. Les dates sont envoyées avec leur fuseau horaire et affichées à l'heure de chaque membre.
+4.10.4. « Tout le monde » inclut les personnes non binaires ; « hommes » et « femmes » ne les incluent pas.
 
-### 4.11. Démonstration
-4.11.1. 27 membres fictifs dans plusieurs villes de Madagascar et de plusieurs langues, portraits dessinés (jamais de visage réel), paysages réels de Madagascar sous licence libre, matchs et messages déjà en cours, un signalement à traiter.
-4.11.2. Boutons « Essayer sans compte » (membre, modération), désactivables ; données recréées chaque nuit.
+### 4.11. Application installable et Android
+4.11.1. PWA : installable depuis le navigateur, interface gardée sur l'appareil (ouverture hors réseau, mises à jour en arrière-plan, avis « nouvelle version prête »).
+4.11.2. Application Android (APK signé) qui ouvre le site en ligne, avec retour arrière natif et envoi de photos depuis la galerie ou l'appareil photo.
+
+### 4.12. Démonstration
+4.12.1. 32 membres fictifs à Madagascar et dans la diaspora (Paris, La Réunion, Maurice, Montréal), de plusieurs langues et genres, portraits dessinés (jamais de visage réel), paysages réels de Madagascar sous licence libre, matchs et messages déjà en cours, un signalement à traiter.
+4.12.2. Boutons « Essayer sans compte » (membre, modération), désactivables ; données recréées chaque nuit.
 
 ## 5. Règles de gestion
 
@@ -98,7 +104,7 @@ LoveMatch est né d'un sujet d'examen JSP de Licence 2 (« site de rencontre ave
 5.2. Un like par paire (membre, profil) ; un match par paire de personnes.
 5.3. Une conversation n'existe qu'entre deux personnes ayant matché, et se ferme si l'une bloque l'autre ou met fin au contact.
 5.4. Le nom de famille et l'e-mail ne sont jamais renvoyés aux autres membres.
-5.5. Les distances sont calculées entre les villes, jamais à partir d'une position de l'utilisateur.
+5.5. Les distances sont calculées entre les centres des villes, jamais à partir d'une position de l'utilisateur.
 5.6. Deux personnes sans langue commune ne sont jamais proposées l'une à l'autre.
 
 ## 6. Architecture
@@ -126,3 +132,4 @@ LoveMatch est né d'un sujet d'examen JSP de Licence 2 (« site de rencontre ave
 8.6. Les sept dictionnaires ont les mêmes textes et les mêmes variables (vérification automatique) ; les erreurs de l'API sont traduites (test automatisé).
 8.7. Aucune violation WCAG 2.2 AA (axe-core) sur les pages, y compris en arabe.
 8.8. L'application déjà ouverte une fois s'affiche sans réseau.
+8.9. Deux membres de pays différents ne se voient que si leurs deux rayons couvrent la distance ; les dates portent leur fuseau horaire (tests automatisés).

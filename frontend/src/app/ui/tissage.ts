@@ -148,7 +148,7 @@ export class Tissage {
     const communs = s.interetsCommuns.length;
     return [
       { cle: 'age', points: s.age, max: 25, detail: t(s.age >= 20 ? 'score.age.proche' : 'score.age.tranche') },
-      { cle: 'distance', points: s.distance, max: 25, detail: t('score.distance.km', { km: s.distanceKm }) },
+      { cle: 'distance', points: s.distance, max: 25, detail: t('score.distance.km', { km: this.i18n.nombre(s.distanceKm) }) },
       {
         cle: 'interets', points: s.interets, max: 25,
         detail: communs === 0 ? t('score.interets.aucun') : t(communs === 1 ? 'score.interets.un' : 'score.interets.n', { n: communs }),

@@ -39,7 +39,7 @@ public class ProfilMapper {
 
     public ProfilPublicResponse publicDe(Utilisateur u, List<Long> photoIds) {
         return new ProfilPublicResponse(u.getId(), u.getPrenom(), u.age(), u.getGenre(), u.getVille().getNom(),
-            u.getVille().getRegion(), u.getBio(), u.getRecherche(), interets(u), langues(u), photoIds);
+            u.getVille().getRegion(), u.getVille().getPays(), u.getBio(), u.getRecherche(), interets(u), langues(u), photoIds);
     }
 
     // identifiants des photos de plusieurs membres en une requête (listes de suggestions, de matchs)
@@ -58,7 +58,7 @@ public class ProfilMapper {
     }
 
     public VilleResponse ville(Ville v) {
-        return new VilleResponse(v.getId(), v.getNom(), v.getRegion());
+        return new VilleResponse(v.getId(), v.getNom(), v.getRegion(), v.getPays());
     }
 
     public InteretResponse interet(Interet i) {

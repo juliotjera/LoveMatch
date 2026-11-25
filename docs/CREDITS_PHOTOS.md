@@ -1,4 +1,4 @@
-# Crédits des photos
+# Crédits des photos et des données
 
 Les portraits des profils de démonstration sont dessinés par le programme (`util/Illustration.java`) : aucune photo de personne réelle.
 
@@ -13,3 +13,7 @@ Les paysages (deuxième photo de sept profils de démonstration) viennent de Wik
 | `isalo.jpg` | Parc national de l'Isalo | Bernard Gagnon | CC BY-SA 3.0 | [Isalo National Park 01.jpg](https://commons.wikimedia.org/wiki/File:Isalo_National_Park_01.jpg) |
 | `rizieres.jpg` | Rizières en terrasses | Hardscarf | CC BY-SA 3.0 | [Madagascar - rice terraces.jpg](https://commons.wikimedia.org/wiki/File:Madagascar_-_rice_terraces.jpg) |
 | `nosy-iranja.jpg` | Plage de Nosy Iranja | Diego Delso | CC BY-SA 4.0 | [Nosy Iranja, Madagascar, 2025-09-17, DD 21.jpg](https://commons.wikimedia.org/wiki/File:Nosy_Iranja,_Madagascar,_2025-09-17,_DD_21.jpg) |
+
+## Villes du monde
+
+`backend/src/main/resources/geonames/villes.tsv.gz` provient de [GeoNames](https://www.geonames.org) (fichiers `cities15000` et `admin1CodesASCII`), sous licence [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Le fichier a été réduit aux colonnes utiles (nom, nom sans accents, pays, région, coordonnées, population) et privé des quartiers de villes (codes `PPLX`, `PPLH`, `PPLQ`, `PPLW`) : 31 800 villes de plus de 15 000 habitants.

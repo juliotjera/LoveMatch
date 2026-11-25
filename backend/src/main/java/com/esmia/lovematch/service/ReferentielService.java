@@ -6,7 +6,8 @@ import java.util.List;
 
 public interface ReferentielService {
 
-    List<VilleResponse> villes();
+    // villes dont le nom commence par « debut » (accents et majuscules ignorés)
+    List<VilleResponse> villes(String debut, int limite);
 
     List<InteretResponse> interets();
 }

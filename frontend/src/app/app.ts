@@ -25,10 +25,11 @@ import { I18n } from './core/i18n';
     </div>
   `,
   styles: `
+    /* téléphone : en haut de l'écran, pour ne cacher ni la carte ni les boutons J'aime et Passer */
     .avis {
       position: fixed;
       left: 50%;
-      bottom: calc(var(--barre-basse) + 96px);
+      top: 70px;
       z-index: 50;
       display: grid;
       gap: 8px;
@@ -46,7 +47,7 @@ import { I18n } from './core/i18n';
       color: #fff;
       box-shadow: 0 12px 30px -10px rgb(31 24 51 / 50%);
       pointer-events: auto;
-      animation: monter 0.2s ease-out;
+      animation: apparaitre 0.2s ease-out;
     }
     .un-avis.erreur {
       background: var(--erreur);
@@ -70,11 +71,12 @@ import { I18n } from './core/i18n';
       background: none;
       font-size: 1.3rem;
     }
-    @keyframes monter {
-      from { opacity: 0; transform: translateY(8px); }
+    @keyframes apparaitre {
+      from { opacity: 0; transform: translateY(-6px); }
     }
     @media (min-width: 900px) {
       .avis {
+        top: auto;
         bottom: 28px;
       }
     }

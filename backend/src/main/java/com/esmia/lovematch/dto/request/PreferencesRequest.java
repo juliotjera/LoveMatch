@@ -9,5 +9,5 @@ public record PreferencesRequest(
     @NotNull GenreRecherche genreRecherche,
     @Min(18) @Max(99) int ageMin,
     @Min(18) @Max(99) int ageMax,
-    @Min(10) @Max(1000) int rayonKm
+    @Min(10) @Max(20000) int rayonKm
 ) {}

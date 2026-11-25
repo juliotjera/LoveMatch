@@ -2,7 +2,7 @@
 
 [![Tests](https://github.com/juliotjera/LoveMatch/actions/workflows/tests.yml/badge.svg?branch=master)](https://github.com/juliotjera/LoveMatch/actions/workflows/tests.yml)
 
-Application de rencontres pour les personnes qui vivent à Madagascar, avec un **score de compatibilité expliqué** : chaque suggestion montre sa note sur 100 et la part de chacun de ses cinq critères. On ne vous propose que des personnes avec qui la discussion est possible : préférences réciproques, distance acceptée des deux côtés, **au moins une langue en commun**. Interface en **sept langues** (malagasy, français, English, español, 中文, हिन्दी, العربية), installable sur le téléphone.
+Application de rencontres née à Madagascar et ouverte au monde, avec un **score de compatibilité expliqué** : chaque suggestion montre sa note sur 100 et la part de chacun de ses cinq critères. On ne vous propose que des personnes avec qui la discussion est possible : préférences réciproques, distance acceptée des deux côtés, **au moins une langue en commun**. Interface en **sept langues** (malagasy, français, English, español, 中文, हिन्दी, العربية), **31 800 villes du monde**, installable sur le téléphone.
 
 Réécriture complète, en **Spring Boot 4 + Angular 22**, d'un sujet d'examen JSP de L2 que j'avais réalisé seul. Le sujet lui-même a été refait : voir le [cahier des charges, version 2](docs/CAHIER_DES_CHARGES.md).
 
@@ -17,19 +17,20 @@ Réécriture complète, en **Spring Boot 4 + Angular 22**, d'un sujet d'examen J
 - **Suggestions triées par compatibilité**, une à la fois : J'aime ou Passer (flèches du clavier acceptées), « Revoir » un profil passé, filtres distance et intérêts communs.
 - **Match mutuel** : un like reste anonyme (« quelqu'un vous a liké ») ; si c'est réciproque, la conversation s'ouvre.
 - **Messagerie en temps réel** (WebSocket STOMP) avec accusé « Vu », historique paginé, notifications en direct, idée de premier message tirée d'un intérêt commun.
-- **Profil** : jusqu'à 4 photos (redimensionnées et nettoyées par le serveur), bio, 3 à 8 centres d'intérêt, 1 à 5 langues parlées, préférences (genre, tranche d'âge, rayon).
+- **Profil** : jusqu'à 4 photos (redimensionnées et nettoyées par le serveur), bio, 3 à 8 centres d'intérêt, 1 à 5 langues parlées, genre (femme, homme, non binaire), préférences (genre, tranche d'âge, rayon jusqu'à « partout dans le monde »).
+- **International** : ville choisie parmi 31 800 villes au fil de la frappe (champ accessible au clavier), pays affiché dans la langue de chacun, dates à l'heure locale de chaque membre, diaspora visible quand les deux rayons le permettent.
 - **Sept langues** : choix à tout moment, langue du téléphone détectée, arabe de droite à gauche, erreurs de l'API traduites elles aussi.
 - **Installable** (PWA) : l'interface reste sur le téléphone et s'ouvre même sans réseau ; une application Android est prévue sur la même base.
 - **Sécurité des membres** : blocage (dans les deux sens), signalement avec motif, espace de **modération** (classer, avertir, suspendre, réactiver).
 - **Vie privée** : nom de famille, e-mail et position jamais montrés ; suppression du compte et de toutes ses données en un clic.
-- **Démonstration** : « Essayer sans compte » (membre ou modération), 27 profils fictifs de plusieurs langues, portraits dessinés, paysages réels de Madagascar ([crédits](docs/CREDITS_PHOTOS.md)), recréés chaque nuit.
+- **Démonstration** : « Essayer sans compte » (membre ou modération), 32 profils fictifs à Madagascar et dans la diaspora, portraits dessinés, paysages réels de Madagascar ([crédits](docs/CREDITS_PHOTOS.md), comme pour la liste des villes GeoNames), recréés chaque nuit.
 
 ## Le score, en cinq brins
 
 | Critère | Points | Calcul |
 | --- | --- | --- |
 | Âge | 25 | plein score quand chacun est au centre de la tranche recherchée par l'autre |
-| Distance | 25 | entre les deux villes (coordonnées, formule de haversine) : plein score sous 5 km, puis décroissance jusqu'au rayon de recherche |
+| Distance | 25 | entre les deux villes, partout dans le monde (coordonnées GeoNames, formule de haversine) : plein score sous 5 km, puis décroissance jusqu'au plus petit des deux rayons |
 | Centres d'intérêt | 25 | indice de Jaccard : intérêts communs ÷ intérêts réunis |
 | Langues | 15 | une langue commune 10, deux ou plus 15 |
 | Intention | 10 | même recherche (relation sérieuse, amitié, à découvrir) |
@@ -43,7 +44,7 @@ Avant tout calcul, des **filtres obligatoires et réciproques** : genre recherch
 | Serveur | Spring Boot 4.1, Java 25, Spring Security (JWT HS256 en cookie HttpOnly SameSite=Strict, CSRF), Spring Data JPA, Flyway, WebSocket STOMP, messages traduits (MessageSource + Accept-Language), OpenAPI (`/api/docs/ui`) |
 | Base | PostgreSQL (production, Neon) ; H2 en mode PostgreSQL pour le développement et les tests |
 | Interface | Angular 22 : composants autonomes, signaux, sans zone.js, routes protégées chargées à la demande, intercepteurs, dictionnaires JSON chargés à la demande, CSS en propriétés logiques (droite à gauche), service worker |
-| Qualité | 11 tests d'acceptation sur H2 **et** PostgreSQL, vérification automatique des 7 dictionnaires, audit axe-core WCAG 2.2 AA (0 violation, y compris en arabe), CSP et Permissions-Policy |
+| Qualité | 15 tests d'acceptation sur H2 **et** PostgreSQL, vérification automatique des 7 dictionnaires, audit axe-core WCAG 2.2 AA (0 violation, y compris en arabe), CSP et Permissions-Policy |
 | Déploiement | une seule image Docker (Spring Boot sert l'interface compilée), Render + Neon |
 
 Organisation du serveur (mêmes conventions que mes projets de L3) : `config`, `controller/rest`, `dto/request`, `dto/response`, `entity`, `enumeration`, `exception`, `mapper`, `repository`, `security`, `service` + `service/impl`, `util`.

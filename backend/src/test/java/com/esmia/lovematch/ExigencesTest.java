@@ -173,6 +173,62 @@ class ExigencesTest {
     }
 
     @Test
+    @DisplayName("Villes du monde : recherche sans accents, les plus peuplées d'abord, pays renvoyé")
+    void villesDuMonde() throws Exception {
+        JsonNode paris = json.readTree(mvc.perform(get("/api/referentiels/villes").param("q", "Paris"))
+            .andExpect(status().isOk()).andReturn().getResponse().getContentAsString(java.nio.charset.StandardCharsets.UTF_8));
+        assertThat(paris.get(0).get("nom").asString()).isEqualTo("Paris");
+        assertThat(paris.get(0).get("pays").asString()).isEqualTo("FR");
+
+        JsonNode montreal = json.readTree(mvc.perform(get("/api/referentiels/villes").param("q", "montré"))
+            .andReturn().getResponse().getContentAsString(java.nio.charset.StandardCharsets.UTF_8));
+        assertThat(montreal.get(0).get("pays").asString()).isEqualTo("CA");
+
+        JsonNode tana = json.readTree(mvc.perform(get("/api/referentiels/villes").param("q", "antan"))
+            .andReturn().getResponse().getContentAsString(java.nio.charset.StandardCharsets.UTF_8));
+        assertThat(tana.get(0).get("nom").asString()).isEqualTo("Antananarivo");
+        assertThat(tana.get(0).get("region").asString()).isEqualTo("Analamanga");
+
+        mvc.perform(get("/api/referentiels/villes").param("q", "")).andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("Distance internationale : visible seulement quand les deux rayons couvrent la distance")
+    void rencontresInternationales() throws Exception {
+        Membre tana = membres.complet("FEMME", "HOMMES", 27, "Antananarivo");
+        Membre paris = membres.complet("HOMME", "FEMMES", 28, "Paris|FR");
+        membres.preferences(paris, "FEMMES", 20, 35, 20000);
+
+        membres.preferences(tana, "HOMMES", 20, 35, 200);
+        assertThat(membres.suggestions(tana)).doesNotContain(paris.id());
+        membres.preferences(tana, "HOMMES", 20, 35, 20000);
+        assertThat(membres.suggestions(tana)).contains(paris.id());
+        assertThat(membres.suggestions(paris)).contains(tana.id());
+    }
+
+    @Test
+    @DisplayName("Genre non binaire : proposé seulement à qui cherche « tout le monde »")
+    void genreNonBinaire() throws Exception {
+        Membre nb = membres.complet("NON_BINAIRE", "TOUS", 26, "Mahajanga");
+        Membre toutLeMonde = membres.complet("FEMME", "TOUS", 26, "Mahajanga");
+        Membre hommes = membres.complet("FEMME", "HOMMES", 26, "Mahajanga");
+        assertThat(membres.suggestions(toutLeMonde)).contains(nb.id());
+        assertThat(membres.suggestions(hommes)).doesNotContain(nb.id());
+        assertThat(membres.suggestions(nb)).contains(toutLeMonde.id()).doesNotContain(hommes.id());
+    }
+
+    @Test
+    @DisplayName("Les dates partent avec leur fuseau horaire, pour être lues à l'heure de chacun")
+    void datesAvecFuseau() throws Exception {
+        Membre a = membres.complet("FEMME", "HOMMES", 30, "Morondava");
+        Membre b = membres.complet("HOMME", "FEMMES", 30, "Morondava");
+        membres.reagir(a, b, "LIKE", 201);
+        long conversation = membres.reagir(b, a, "LIKE", 201).get("correspondanceId").asLong();
+        JsonNode message = membres.envoyer(post("/api/matchs/" + conversation + "/messages"), a, Map.of("contenu", "Salama"), 201);
+        assertThat(message.get("envoyeLe").asString()).matches("[0-9]{4}-[0-9]{2}-[0-9]{2}T.*[+]03:00");
+    }
+
+    @Test
     @DisplayName("Inscription réservée aux majeurs ; e-mail unique")
     void inscription() throws Exception {
         String corps = """

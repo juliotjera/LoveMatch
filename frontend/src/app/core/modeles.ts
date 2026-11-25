@@ -1,6 +1,6 @@
 // Types renvoyés par l'API Spring Boot (dto/response)
 
-export type Genre = 'HOMME' | 'FEMME';
+export type Genre = 'HOMME' | 'FEMME' | 'NON_BINAIRE';
 export type GenreRecherche = 'HOMMES' | 'FEMMES' | 'TOUS';
 export type Recherche = 'RELATION_SERIEUSE' | 'AMITIE' | 'A_DECOUVRIR';
 export type Role = 'MEMBRE' | 'ADMIN';
@@ -13,6 +13,7 @@ export interface Ville {
   id: number;
   nom: string;
   region: string;
+  pays: string;
 }
 
 export interface Interet {
@@ -52,6 +53,7 @@ export interface ProfilPublic {
   genre: Genre;
   ville: string;
   region: string;
+  pays: string;
   bio: string | null;
   recherche: Recherche;
   interets: Interet[];

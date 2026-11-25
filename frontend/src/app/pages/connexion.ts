@@ -27,8 +27,13 @@ import { CadreVisiteur } from '../ui/cadre-visiteur';
         </div>
         <div class="champ">
           <label for="mdp">{{ t('champ.motDePasse') }}</label>
-          <input id="mdp" class="saisie" type="password" formControlName="motDePasse" autocomplete="current-password"
-            [attr.aria-invalid]="invalide('motDePasse')" aria-describedby="mdp-erreur" />
+          <div class="mot-de-passe">
+            <input id="mdp" class="saisie" [type]="voirMdp() ? 'text' : 'password'" formControlName="motDePasse"
+              autocomplete="current-password" [attr.aria-invalid]="invalide('motDePasse')" aria-describedby="mdp-erreur" />
+            <button type="button" class="voir" [attr.aria-pressed]="voirMdp()" (click)="voirMdp.set(!voirMdp())">
+              {{ voirMdp() ? t('mdp.masquer') : t('mdp.afficher') }}
+            </button>
+          </div>
           @if (invalide('motDePasse')) {
             <p id="mdp-erreur" class="erreur-champ">{{ t('erreur.obligatoire') }}</p>
           }
@@ -61,6 +66,7 @@ export class Connexion {
 
   protected readonly occupe = signal(false);
   protected readonly erreur = signal('');
+  protected readonly voirMdp = signal(false);
   protected readonly essaye = signal(false);
 
   protected readonly formulaire = this.fb.group({

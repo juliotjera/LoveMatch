@@ -7,7 +7,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.esmia.lovematch.entity.Interet;
-import com.esmia.lovematch.entity.Ville;
 import com.esmia.lovematch.repository.InteretRepository;
 import com.esmia.lovematch.repository.VilleRepository;
 import com.esmia.lovematch.util.Horloge;
@@ -31,18 +30,20 @@ final class Membres {
 
     private final MockMvc mvc;
     private final JsonMapper json;
-    private final List<Ville> villes;
+    private final VilleRepository villes;
     private final List<Interet> interets;
 
     Membres(MockMvc mvc, JsonMapper json, VilleRepository villes, InteretRepository interets) {
         this.mvc = mvc;
         this.json = json;
-        this.villes = villes.findAllByOrderByNomAsc();
+        this.villes = villes;
         this.interets = interets.findAllByOrderByLibelleFrAsc();
     }
 
     Long ville(String nom) {
-        return villes.stream().filter(v -> v.getNom().equals(nom)).findFirst().orElseThrow().getId();
+        String[] morceaux = nom.split("\\|");
+        return villes.findFirstByNomAsciiAndPaysOrderByPopulationDesc(
+            db.migration.V4__Villes_du_monde.normaliser(morceaux[0]), morceaux.length > 1 ? morceaux[1] : "MG").orElseThrow().getId();
     }
 
     // inscription puis profil complété (bio et trois centres d'intérêt) : le membre est visible

@@ -104,7 +104,7 @@ interface Groupe {
           }
         </div>
         <h2 id="fiche-nom">{{ c.autre.prenom }}, {{ c.autre.age }}</h2>
-        <p class="detail">{{ c.autre.ville }} ({{ c.autre.region }})</p>
+        <p class="detail">{{ i18n.joindre(c.autre.ville, c.autre.region, i18n.nomPays(c.autre.pays)) }}</p>
         <p class="cherche">{{ t('recherche.' + c.autre.recherche) }}</p>
         @if (c.autre.bio) {
           <p dir="auto">{{ c.autre.bio }}</p>
@@ -385,7 +385,7 @@ export class Conversation implements OnInit {
   private readonly tempsReel = inject(TempsReel);
   private readonly destruction = inject(DestroyRef);
   private readonly injecteur = inject(Injector);
-  private readonly i18n = inject(I18n);
+  protected readonly i18n = inject(I18n);
   protected readonly t = this.i18n.t;
   protected readonly libelle = this.i18n.interet;
 

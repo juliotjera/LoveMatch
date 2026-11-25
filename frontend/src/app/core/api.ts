@@ -114,7 +114,8 @@ export class Api {
   reactiver = (id: number) => this.ecrire<void>('POST', `/api/admin/membres/${id}/reactivation`);
 
   // référentiels
-  villes = () => this.lire<Ville[]>('/api/referentiels/villes');
+  // villes du monde dont le nom commence par « debut »
+  villes = (debut: string) => this.lire<Ville[]>('/api/referentiels/villes', new HttpParams().set('q', debut).set('limite', 8));
   interets = () => this.lire<Interet[]>('/api/referentiels/interets');
 }
 

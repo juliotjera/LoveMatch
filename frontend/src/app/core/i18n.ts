@@ -68,6 +68,23 @@ export class I18n {
     }
   };
 
+  // « FR » → « France », « 法国 », « फ़्रांस »…
+  readonly nomPays = (code: string): string => {
+    try {
+      return new Intl.DisplayNames([this.locale()], { type: 'region' }).of(code) ?? code;
+    } catch {
+      return code;
+    }
+  };
+
+  readonly nombre = (n: number) => new Intl.NumberFormat(this.locale()).format(n);
+
+  // « Paris, France » ; virgule arabe « ، » et chinoise « ， » selon la langue
+  readonly joindre = (...morceaux: (string | null | undefined)[]) => {
+    const virgule = this.langue() === 'ar' ? '، ' : this.langue() === 'zh' ? '，' : ', ';
+    return morceaux.filter((m) => !!m).join(virgule);
+  };
+
   readonly listeLangues = (codes: readonly string[]) => {
     const noms = codes.map(this.nomLangue);
     try {

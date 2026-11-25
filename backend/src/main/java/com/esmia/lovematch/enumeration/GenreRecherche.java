@@ -1,6 +1,6 @@
 package com.esmia.lovematch.enumeration;
 
-// Genre(s) que le membre souhaite rencontrer (sujet d'origine : homme, femme, les deux)
+// Genre(s) que le membre souhaite rencontrer ; « TOUS » inclut les personnes non binaires
 public enum GenreRecherche {
     HOMMES,
     FEMMES,

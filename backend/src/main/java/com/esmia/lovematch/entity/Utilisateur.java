@@ -54,7 +54,7 @@ public class Utilisateur {
     private LocalDate dateNaissance;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 10)
+    @Column(nullable = false, length = 12)
     private Genre genre;
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)

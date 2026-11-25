@@ -28,6 +28,7 @@ import com.esmia.lovematch.repository.VilleRepository;
 import com.esmia.lovematch.service.DemoService;
 import com.esmia.lovematch.util.Horloge;
 import com.esmia.lovematch.util.Illustration;
+import db.migration.V4__Villes_du_monde;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
@@ -36,8 +37,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
@@ -118,6 +117,17 @@ public class DemoServiceImpl implements DemoService {
             "在塔那那利佛做进出口生意，周末喜欢爬山和拍照。", "randonnee photo voyage"),
         new Fiche("Yasmine", "Saïd", Genre.FEMME, 25, "Mahajanga", Recherche.RELATION_SERIEUSE, GenreRecherche.HOMMES, 23, 32, 150,
             "Pharmacienne à Majunga. J'aime la mer, la poésie et les longues soirées sur le boulevard.", "plage lecture culture cuisine"),
+        // la diaspora et les voisins de l'océan Indien : visibles quand on cherche « partout dans le monde »
+        new Fiche("Tojo", "Rakotoson", Genre.HOMME, 29, "Paris|FR", Recherche.RELATION_SERIEUSE, GenreRecherche.FEMMES, 24, 33, 20000,
+            "Ingénieur à Paris depuis six ans. Je rentre à Tana chaque été et je cherche quelqu'un qui aime les deux rives.", "voyage cuisine lecture musique"),
+        new Fiche("Kevin", "Ramsamy", Genre.HOMME, 27, "Port Louis|MU", Recherche.A_DECOUVRIR, GenreRecherche.FEMMES, 22, 32, 5000,
+            "Software developer in Port Louis. Weekend kitesurfer, always up for a trip to Madagascar.", "informatique plage voyage fitness"),
+        new Fiche("Élodie", "Hoarau", Genre.FEMME, 28, "Saint-Denis|RE", Recherche.RELATION_SERIEUSE, GenreRecherche.HOMMES, 25, 35, 1000,
+            "Infirmière à La Réunion, randonneuse le week-end : le Piton des Neiges n'a plus de secret pour moi.", "randonnee nature cuisine lecture"),
+        new Fiche("Lucas", "Tremblay", Genre.HOMME, 31, "Montreal|CA", Recherche.RELATION_SERIEUSE, GenreRecherche.FEMMES, 25, 35, 20000,
+            "Professeur de géographie à Montréal. J'ai fait mon mémoire sur les hautes terres malgaches et je compte y retourner.", "culture voyage lecture randonnee"),
+        new Fiche("Sasha", "Andria", Genre.NON_BINAIRE, 25, "Antananarivo", Recherche.AMITIE, GenreRecherche.TOUS, 21, 32, 100,
+            "Illustratrice et danseuse. Je cherche des ami·es pour des expos, des concerts et de longues discussions.", "art danse musique culture"),
         // profil signalé pour la démonstration de la modération ; ne correspond pas aux critères de Fanja
         new Fiche("Rojo", "Ranaivoson", Genre.HOMME, 30, "Antananarivo", Recherche.A_DECOUVRIR, GenreRecherche.FEMMES, 18, 24, 300,
             "Homme d'affaires à l'étranger. Envoyez-moi votre numéro et un peu de crédit pour qu'on parle.", "voyage entrepreneuriat musique")
@@ -128,7 +138,8 @@ public class DemoServiceImpl implements DemoService {
         Map.entry("Fanja", "MG FR EN"), Map.entry("Rado", "MG FR EN ZH"), Map.entry("Nirina", "MG FR EN IT"),
         Map.entry("Malala", "MG FR EN"), Map.entry("Lalaina", "MG FR EN"), Map.entry("Hery", "MG FR EN"),
         Map.entry("Wei", "ZH MG FR"), Map.entry("Arjun", "HI EN FR"), Map.entry("Diego", "ES EN"),
-        Map.entry("Jun", "ZH"), Map.entry("Yasmine", "AR FR MG"));
+        Map.entry("Jun", "ZH"), Map.entry("Yasmine", "AR FR MG"), Map.entry("Tojo", "MG FR EN"), Map.entry("Kevin", "EN FR"),
+        Map.entry("Élodie", "FR"), Map.entry("Lucas", "FR EN"), Map.entry("Sasha", "MG FR EN"));
 
     // deuxième photo de certains membres : un vrai paysage de Madagascar (Wikimedia Commons, voir docs/CREDITS_PHOTOS.md)
     private static final Map<String, String> PAYSAGES = Map.of(
@@ -166,7 +177,7 @@ public class DemoServiceImpl implements DemoService {
     @Transactional
     public void preparer() {
         utilisateurs.supprimerComptesDemo();
-        Map<String, Ville> parNom = villes.findAll().stream().collect(Collectors.toMap(Ville::getNom, Function.identity()));
+        Map<String, Ville> parNom = new HashMap<>();
         // personne ne se connecte à ces comptes par mot de passe : un mot de passe aléatoire, haché une fois
         String motDePasse = encodeur.encode(UUID.randomUUID().toString());
 
@@ -184,7 +195,7 @@ public class DemoServiceImpl implements DemoService {
         moderation.setNom("Modération");
         moderation.setDateNaissance(Horloge.aujourdhui().minusYears(30));
         moderation.setGenre(Genre.FEMME);
-        moderation.setVille(parNom.get("Antananarivo"));
+        moderation.setVille(ville("Antananarivo", parNom));
         moderation.setGenreRecherche(GenreRecherche.TOUS);
         moderation.setRole(Role.ADMIN);
         moderation.setDemo(true);
@@ -230,10 +241,7 @@ public class DemoServiceImpl implements DemoService {
     }
 
     private Utilisateur creer(Fiche f, Map<String, Ville> parNom, String motDePasse, int graine) {
-        Ville ville = parNom.get(f.ville());
-        if (ville == null) {
-            throw new IllegalStateException("Ville de démonstration absente du référentiel : " + f.ville());
-        }
+        Ville ville = ville(f.ville(), parNom);
         Utilisateur u = new Utilisateur();
         u.setEmail(f.prenom().toLowerCase() + ".demo@lovematch.mg");
         u.setMotDePasse(motDePasse);
@@ -263,6 +271,16 @@ public class DemoServiceImpl implements DemoService {
             photos.save(new Photo(u, lirePaysage(paysage), "image/jpeg", 1));
         }
         return u;
+    }
+
+    // « Antananarivo » (Madagascar par défaut) ou « Paris|FR » pour une ville d'un autre pays
+    private Ville ville(String cle, Map<String, Ville> cache) {
+        return cache.computeIfAbsent(cle, c -> {
+            String[] morceaux = c.split("\\|");
+            String pays = morceaux.length > 1 ? morceaux[1] : "MG";
+            return villes.findFirstByNomAsciiAndPaysOrderByPopulationDesc(V4__Villes_du_monde.normaliser(morceaux[0]), pays)
+                .orElseThrow(() -> new IllegalStateException("Ville de démonstration absente du référentiel : " + c));
+        });
     }
 
     private static byte[] lirePaysage(String nom) {

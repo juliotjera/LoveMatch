@@ -25,8 +25,9 @@ export class Avertisseur {
     this.liste.update((l) => l.filter((a) => a.id !== id));
   }
 
+  // deux messages au plus ; un seul avec action (« Revoir ») à la fois : le plus récent remplace le précédent
   private ajouter(avis: Avis) {
-    this.liste.update((l) => [...l.slice(-2), avis]);
+    this.liste.update((l) => [...l.filter((a) => !(avis.action && a.action)).slice(-1), avis]);
     setTimeout(() => this.retirer(avis.id), avis.action ? 7000 : 4500);
   }
 }

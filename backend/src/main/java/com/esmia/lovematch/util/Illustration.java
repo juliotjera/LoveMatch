@@ -57,6 +57,10 @@ public final class Illustration {
             // cheveux longs derrière les épaules
             g.setColor(cheveux);
             g.fill(new RoundRectangle2D.Double(205, 230, 310, 470, 160, 160));
+        } else if (genre == Genre.NON_BINAIRE) {
+            // carré mi-long
+            g.setColor(cheveux);
+            g.fill(new RoundRectangle2D.Double(215, 240, 290, 330, 150, 150));
         }
         // épaules et buste
         g.setColor(vetement);
