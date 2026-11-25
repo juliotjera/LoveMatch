@@ -17,8 +17,8 @@ let compteur = 0;
       <label [for]="idChamp">{{ libelle() }}</label>
       <div class="zone">
         <input #champ [id]="idChamp" class="saisie" type="text" role="combobox" autocomplete="off" spellcheck="false"
-          aria-autocomplete="list" [attr.aria-expanded]="ouvert()" [attr.aria-controls]="idListe"
-          [attr.aria-activedescendant]="actif() >= 0 ? idListe + '-' + actif() : null"
+          aria-autocomplete="list" [attr.aria-expanded]="ouvert()" [attr.aria-controls]="ouvert() ? idListe : null"
+          [attr.aria-activedescendant]="ouvert() && actif() >= 0 ? idListe + '-' + actif() : null"
           [attr.aria-describedby]="idAide" [attr.aria-invalid]="invalide() ? true : null"
           [value]="texte()" (input)="saisir($event)" (keydown)="clavier($event)" (blur)="quitter()"
           (focus)="ouvrirSiResultats()" [placeholder]="i18n.t('ville.chercher')" />

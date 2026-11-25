@@ -322,5 +322,9 @@
  "mdp.afficher": "إظهار",
  "mdp.masquer": "إخفاء",
  "profil.rayonPartout": "في أي مكان في العالم",
- "genre.NON_BINAIRE": "غير ثنائي"
+ "genre.NON_BINAIRE": "غير ثنائي",
+ "profil.exporter": "تنزيل بياناتي",
+ "profil.exportAide": "ملف JSON يضم ملفك الشخصي وصورك وإعجاباتك وتطابقاتك ورسائلك.",
+ "conf.portabilite.titre": "خذ بياناتك معك",
+ "conf.portabilite.texte": "من ملفك الشخصي، يمنحك «تنزيل بياناتي» ملف JSON مقروءًا بكل ما يحتفظ به LoveMatch عنك: الملف الشخصي والصور والإعجابات والتطابقات والرسائل. ولا يظهر من الأعضاء الآخرين سوى الاسم الأول."
 }

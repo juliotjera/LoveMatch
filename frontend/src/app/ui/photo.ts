@@ -32,7 +32,7 @@ import { photoUrl } from '../core/api';
       place-items: center;
       width: 100%;
       height: 100%;
-      background: linear-gradient(160deg, var(--jacaranda) 0%, var(--jacaranda-fonce) 100%);
+      background: linear-gradient(160deg, #6c4fa3 0%, #3e2c6e 100%);
       color: #fff;
       font-family: var(--police-titre);
       font-weight: 700;

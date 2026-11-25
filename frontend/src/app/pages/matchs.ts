@@ -90,7 +90,7 @@ import { Quand } from '../ui/quand';
       border-bottom: 0;
     }
     .ligne:hover {
-      background: #faf8fd;
+      background: var(--survol);
     }
     .ligne:focus-visible {
       outline-offset: -3px;
@@ -138,7 +138,7 @@ import { Quand } from '../ui/quand';
       font-weight: 400;
     }
     .nouveau {
-      color: #8a2c10;
+      color: var(--flamboyant-texte);
       font-weight: 700;
     }
     .fermee {
@@ -150,7 +150,7 @@ import { Quand } from '../ui/quand';
       padding: 0 7px;
       border-radius: 999px;
       background: var(--flamboyant);
-      color: #fff;
+      color: var(--sur-couleur);
       font-size: 0.8rem;
       font-weight: 700;
       line-height: 24px;

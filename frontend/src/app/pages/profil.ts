@@ -195,6 +195,10 @@ const MAX_PHOTOS = 4;
           <section class="panneau" aria-labelledby="titre-compte">
             <h2 id="titre-compte">{{ t('profil.compte') }}</h2>
             <p class="aide">{{ t('profil.emailPrive', { email: m.email }) }}</p>
+            <div class="export">
+              <a class="btn btn-contour" href="/api/profil/export" download="lovematch-mes-donnees.json">{{ t('profil.exporter') }}</a>
+              <p class="aide">{{ t('profil.exportAide') }}</p>
+            </div>
             <div class="boutons">
               <button type="button" class="btn btn-contour" (click)="session.fermer()">{{ t('nav.deconnexion') }}</button>
               @if (!m.demo) {
@@ -216,8 +220,8 @@ const MAX_PHOTOS = 4;
       margin-bottom: 20px;
       padding: 18px 20px;
       border-radius: var(--rayon-panneau);
-      background: var(--jacaranda-fonce);
-      color: #fff;
+      background: var(--principal);
+      color: var(--sur-couleur);
     }
     .etape p {
       color: #e3dcf3;
@@ -300,7 +304,7 @@ const MAX_PHOTOS = 4;
       height: 44px;
       border: 0;
       border-radius: 50%;
-      background: rgb(255 255 255 / 92%);
+      background: var(--voile);
       color: var(--encre);
       cursor: pointer;
     }
@@ -358,6 +362,11 @@ const MAX_PHOTOS = 4;
       justify-content: space-between;
       align-items: center;
       gap: 10px;
+    }
+    .export {
+      display: grid;
+      justify-items: start;
+      gap: 6px;
     }
     .boutons {
       display: flex;

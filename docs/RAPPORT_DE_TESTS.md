@@ -1,6 +1,6 @@
 # Rapport de tests
 
-Date : 25 novembre 2026. Version : 2.1 (cahier des charges version 2, ouverture internationale).
+Date : 25 novembre 2026. Version : 2.2 (export des données, thème sombre, tests de bout en bout).
 
 ## 1. Tests automatisés du serveur
 
@@ -23,8 +23,27 @@ Exécutés deux fois, sur H2 (mode PostgreSQL) et sur un vrai PostgreSQL 18 ; la
 | Antananarivo et Paris ne se voient que lorsque les deux rayons couvrent les 8 755 km | 8.9 | réussi | réussi |
 | Genre non binaire proposé seulement à qui cherche « tout le monde », et réciproquement | 4.10.4 | réussi | réussi |
 | Les dates partent avec leur fuseau horaire (+03:00) | 8.9 | réussi | réussi |
+| Export RGPD : fichier JSON en pièce jointe avec profil, likes, matchs et messages ; jamais le nom ni l'e-mail des autres ; refusé sans session | 4.1.5 | réussi | réussi |
+| Santé du service accessible sans session, sans détail ; les autres points techniques restent fermés | 6.6 | réussi | réussi |
+| Adresse inconnue : l'interface et son écran « Page introuvable » pour une page, un message JSON traduit pour l'API, toujours 404 | 7.2 | réussi | réussi |
 
-Total : 15 tests, 0 échec, sur chacune des deux bases.
+Total : 18 tests, 0 échec, sur chacune des deux bases.
+
+## 1 bis. Parcours de bout en bout (Playwright)
+
+L'application complète (serveur Spring Boot servant l'interface compilée) est pilotée dans un vrai navigateur, sur un téléphone (Pixel 7) puis sur un ordinateur ; à chaque étape, axe-core vérifie l'absence de violation WCAG 2.2 AA. Chaque parcours crée ses propres membres.
+
+| Parcours | Téléphone | Ordinateur |
+| --- | --- | --- |
+| Accueil : promesse, score en cinq brins | réussi | réussi |
+| Sept langues ; arabe de droite à gauche | réussi | réussi |
+| Inscription en anglais : ville choisie au clavier (« tok » → Tokyo, Japon), mot de passe affiché, arrivée sur le profil | réussi | réussi |
+| Page introuvable et confidentialité | réussi | réussi |
+| Connexion, like réciproque, fenêtre « C'est réciproque », message envoyé et affiché | réussi | réussi |
+| Démonstration : score détaillé, conversation, profil, téléchargement de ses données | réussi | réussi |
+| Modération | réussi | réussi |
+
+Total : 14 parcours, 0 échec. Ils ont révélé deux défauts, corrigés : une adresse inconnue renvoyait une erreur JSON au lieu de l'écran de l'application, et le champ de ville gardait des références ARIA vers une liste fermée.
 
 ## 2. Dictionnaires
 
@@ -46,7 +65,7 @@ Sur l'image de production (interface servie par Spring Boot, base PostgreSQL, en
 
 ## 4. Accessibilité (WCAG 2.2 AA)
 
-Audit axe-core 4.14 (règles WCAG 2.0, 2.1 et 2.2, niveaux A et AA) sur les 11 pages (accueil, connexion, inscription, confidentialité, découvrir, matchs, conversation, notifications, profil, modération, page introuvable), en français, en arabe (droite à gauche), en hindi et en chinois. **0 violation.**
+Audit axe-core 4.14 (règles WCAG 2.0, 2.1 et 2.2, niveaux A et AA) sur les 11 pages (accueil, connexion, inscription, confidentialité, découvrir, matchs, conversation, notifications, profil, modération, page introuvable), en français, en arabe (droite à gauche), en hindi et en chinois, en thème clair et en thème sombre. **0 violation** (une heure de message trop pâle en thème sombre a été corrigée).
 
 ## 5. Téléphone (critère 8.5)
 

@@ -35,6 +35,7 @@ LoveMatch est né d'un sujet d'examen JSP de Licence 2 (« site de rencontre ave
 4.1.2. Connexion par e-mail et mot de passe ; jeton JWT dans un cookie HttpOnly, SameSite=Strict ; déconnexion.
 4.1.3. Limitation des tentatives de connexion par adresse IP.
 4.1.4. Suppression du compte par le membre, avec toutes ses données (photos, likes, matchs, messages).
+4.1.5. Export de toutes ses données dans un fichier JSON lisible (droit à la portabilité) ; des autres membres, seul le prénom y figure.
 
 ### 4.2. Profil
 4.2.1. Prénom, nom (jamais affiché aux autres), date de naissance (seul l'âge est affiché), genre, ville, bio (500 caractères), centres d'intérêt (3 à 8), ce que l'on recherche, langues parlées (1 à 5 parmi 12).
@@ -114,13 +115,16 @@ LoveMatch est né d'un sujet d'examen JSP de Licence 2 (« site de rencontre ave
 6.3. **Temps réel** : WebSocket STOMP authentifié par le même cookie.
 6.4. **Base** : PostgreSQL en production, migrations versionnées (Flyway) ; H2 en mode PostgreSQL pour le développement.
 6.5. **Interface** Angular 22 : composants autonomes, signaux, sans zone.js, routes protégées et chargées à la demande, intercepteurs (langue, erreurs), dictionnaires JSON chargés à la demande, service worker.
-6.6. **Déploiement** : une seule image Docker (le serveur sert l'interface compilée), Render + Neon ; application Android Capacitor.
+6.6. **Déploiement** : une seule image Docker (le serveur sert l'interface compilée), Render + Neon, santé du service sur `/actuator/health` ; application Android Capacitor.
+6.7. **Qualité** : tests d'acceptation sur H2 et PostgreSQL, parcours Playwright dans un vrai navigateur avec contrôle d'accessibilité, tout cela à chaque envoi (GitHub Actions).
 
 ## 7. Exigences graphiques et ergonomiques
 
 7.1. Identité propre, inspirée de Madagascar (jacaranda et flamboyant, score « tissé » comme un lamba), sans copier une application existante.
 7.2. Mobile d'abord ; accessibilité WCAG 2.2 AA (contrastes, clavier, lecteurs d'écran, cibles de 44 px).
 7.3. Réseau faible : premier chargement léger, fichiers mis en cache, photos allégées par le serveur.
+7.4. Thème sombre qui suit le réglage de l'appareil, avec les mêmes exigences de contraste.
+7.5. Aperçu soigné du lien partagé (image et description Open Graph).
 
 ## 8. Critères d'acceptation
 

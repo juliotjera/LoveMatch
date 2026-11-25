@@ -2,6 +2,7 @@ package com.esmia.lovematch.exception;
 
 import com.esmia.lovematch.dto.response.ErreurResponse;
 import com.esmia.lovematch.util.Horloge;
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import org.slf4j.Logger;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 // Toutes les erreurs de l'API au même format : statut, code, message lisible, champs en erreur
@@ -77,8 +79,19 @@ public class GestionnaireErreurs {
         return reponse(HttpStatus.CONFLICT, "erreur.deja.enregistre", null);
     }
 
+    // adresse inconnue : JSON pour l'API et les fichiers ; pour une page (lien ancien, faute de frappe), l'interface
+    // s'ouvre avec son propre écran « Page introuvable », traduit, et le code HTTP 404
     @ExceptionHandler(NoResourceFoundException.class)
-    public ResponseEntity<ErreurResponse> adresseInconnue(NoResourceFoundException e) {
+    public Object adresseInconnue(NoResourceFoundException e, HttpServletRequest requete) {
+        String chemin = requete.getRequestURI();
+        String dernier = chemin.substring(chemin.lastIndexOf('/') + 1);
+        boolean page = "GET".equals(requete.getMethod()) && !chemin.startsWith("/api/") && !chemin.startsWith("/ws")
+            && !chemin.startsWith("/actuator") && !dernier.contains(".");
+        if (page) {
+            ModelAndView interfaceAngular = new ModelAndView("forward:/index.html");
+            interfaceAngular.setStatus(HttpStatus.NOT_FOUND);
+            return interfaceAngular;
+        }
         return reponse(HttpStatus.NOT_FOUND, "erreur.adresse", null);
     }
 

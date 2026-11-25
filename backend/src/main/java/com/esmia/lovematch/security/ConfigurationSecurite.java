@@ -53,7 +53,7 @@ public class ConfigurationSecurite {
             .authorizeHttpRequests(a -> a
                 .requestMatchers(HttpMethod.POST, "/api/auth/inscription", "/api/auth/connexion", "/api/auth/demo/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/auth/demo", "/api/referentiels/**").permitAll()
-                .requestMatchers("/api/docs/**", "/v3/api-docs/**").permitAll()
+                .requestMatchers("/api/docs/**", "/v3/api-docs/**", "/actuator/health", "/actuator/health/**").permitAll()
                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
                 .requestMatchers("/api/**", "/ws/**").authenticated()
                 // l'interface Angular compilée (fichiers statiques et routes du navigateur)

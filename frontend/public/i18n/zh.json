@@ -322,5 +322,9 @@
  "mdp.afficher": "显示",
  "mdp.masquer": "隐藏",
  "profil.rayonPartout": "全世界",
- "genre.NON_BINAIRE": "非二元性别"
+ "genre.NON_BINAIRE": "非二元性别",
+ "profil.exporter": "下载我的数据",
+ "profil.exportAide": "一个 JSON 文件，包含你的资料、照片、喜欢、配对和消息。",
+ "conf.portabilite.titre": "带走你的数据",
+ "conf.portabilite.texte": "在你的资料页面点击「下载我的数据」，即可获得一个可读的 JSON 文件，包含 LoveMatch 保存的关于你的全部内容：资料、照片、喜欢、配对和消息。其他用户只显示名字。"
 }

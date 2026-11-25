@@ -45,6 +45,26 @@
   --erreur: #b42318;
   --erreur-pale: #fdecea;
 
+  /* rôles : fond des boutons principaux, textes sur fonds colorés, étiquettes, voiles */
+  --principal: #3e2c6e;
+  --principal-survol: #2f2056;
+  --sur-couleur: #ffffff;
+  --flamboyant-texte: #8a2c10;
+  --ocre-pale: #f1e4cc;
+  --ocre-texte: #6b4510;
+  --voile: rgb(255 255 255 / 92%);
+  --voile-entete: rgb(246 244 249 / 92%);
+  --survol: #faf8fd;
+  --squelette: #f4f0fa;
+  --avis-fond: #1f1833;
+  --halo-1: #e2d9f2;
+  --halo-2: #f3dcd3;
+  --pale-age: #e4ddf1;
+  --pale-distance: #d6e9ed;
+  --pale-interets: #f8ddd3;
+  --pale-langues: #d7e9de;
+  --pale-recherche: #f1e4cc;
+
   --polices-ecritures: 'Noto Sans Arabic Variable', 'Noto Sans Devanagari Variable', 'PingFang SC', 'Microsoft YaHei', 'Noto Sans CJK SC', 'Noto Sans SC';
   --police-titre: 'Bricolage Grotesque Variable', var(--polices-ecritures), 'Segoe UI', system-ui, sans-serif;
   --police-texte: 'Chiffres LoveMatch', 'Atkinson Hyperlegible Next Variable', var(--polices-ecritures), 'Segoe UI', system-ui, sans-serif;
@@ -53,6 +73,55 @@
   --rayon-panneau: 14px;
   --ombre-carte: 0 1px 2px rgb(31 24 51 / 6%), 0 12px 32px -12px rgb(62 44 110 / 22%);
   --barre-basse: 68px;
+}
+
+/* thème sombre : suit le réglage du téléphone ou de l'ordinateur (contrastes vérifiés, au moins 4,5:1 pour le texte) */
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+
+    --encre: #ece8f6;
+    --encre-douce: #b9b1cf;
+    --papier: #121019;
+    --carte: #1c1828;
+    --trait: #352d4a;
+    --trait-fort: #7d7299;
+
+    --jacaranda: #a68ce0;
+    --jacaranda-fonce: #cbb8f5;
+    --jacaranda-pale: #2c2440;
+    --flamboyant-pale: #3a1e16;
+
+    --brin-age: #a68ce0;
+    --brin-distance: #4fb3c6;
+    --brin-interets: #f07a52;
+    --brin-langues: #5fb38a;
+    --brin-recherche: #d9a548;
+
+    --succes: #6fcf9f;
+    --erreur: #ff8a80;
+    --erreur-pale: #3b1d1d;
+
+    --principal: #6c4fa3;
+    --principal-survol: #5a3f8f;
+    --flamboyant-texte: #ffb199;
+    --ocre-pale: #3a2e18;
+    --ocre-texte: #f0d39a;
+    --voile: rgb(28 24 40 / 92%);
+    --voile-entete: rgb(18 16 25 / 92%);
+    --survol: #241f33;
+    --squelette: #2a2438;
+    --avis-fond: #2c2442;
+    --halo-1: #2a2140;
+    --halo-2: #36201b;
+    --pale-age: #2f2747;
+    --pale-distance: #1d3136;
+    --pale-interets: #3a2219;
+    --pale-langues: #1e3127;
+    --pale-recherche: #3a2e18;
+
+    --ombre-carte: 0 1px 2px rgb(0 0 0 / 40%), 0 12px 32px -12px rgb(0 0 0 / 60%);
+  }
 }
 
 *,
@@ -181,17 +250,17 @@ textarea {
 }
 
 .btn-principal {
-  background: var(--jacaranda-fonce);
-  color: #fff;
+  background: var(--principal);
+  color: var(--sur-couleur);
 }
 
 .btn-principal:hover {
-  background: #2f2056;
+  background: var(--principal-survol);
 }
 
 .btn-aimer {
   background: var(--flamboyant);
-  color: #fff;
+  color: var(--sur-couleur);
 }
 
 .btn-aimer:hover {
@@ -355,7 +424,7 @@ textarea.saisie {
 .pastille-commune {
   border-color: transparent;
   background: var(--flamboyant-pale);
-  color: #8a2c10;
+  color: var(--flamboyant-texte);
   font-weight: 700;
 }
 
@@ -368,9 +437,9 @@ button.pastille {
 
 label.pastille:has(input:checked),
 button.pastille[aria-pressed='true'] {
-  background: var(--jacaranda-fonce);
-  border-color: var(--jacaranda-fonce);
-  color: #fff;
+  background: var(--principal);
+  border-color: var(--principal);
+  color: var(--sur-couleur);
 }
 
 label.pastille:has(input:focus-visible) {

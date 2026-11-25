@@ -18,4 +18,6 @@ public interface SignalementRepository extends JpaRepository<Signalement, Long> 
     long countByStatut(StatutSignalement statut);
 
     long countByCibleId(Long cibleId);
+
+    List<Signalement> findByAuteurIdOrderByCreeLeDesc(Long auteurId);
 }

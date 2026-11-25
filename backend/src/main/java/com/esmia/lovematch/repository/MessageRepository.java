@@ -2,6 +2,7 @@ package com.esmia.lovematch.repository;
 
 import com.esmia.lovematch.entity.Message;
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Pageable;
@@ -25,4 +26,6 @@ public interface MessageRepository extends JpaRepository<Message, Long> {
     int marquerLus(@Param("c") Long correspondance, @Param("lecteur") Long lecteur, @Param("quand") LocalDateTime quand);
 
     long countByEnvoyeLeAfter(LocalDateTime depuis);
+
+    List<Message> findByCorrespondanceIdInOrderByEnvoyeLeAsc(Collection<Long> correspondances);
 }

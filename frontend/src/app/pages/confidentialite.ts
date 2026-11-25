@@ -32,5 +32,5 @@ import { CadreVisiteur } from '../ui/cadre-visiteur';
 })
 export class Confidentialite {
   protected readonly t = inject(I18n).t;
-  protected readonly sections = ['collecte', 'visible', 'photos', 'distance', 'messages', 'effacement', 'cookies', 'credits'];
+  protected readonly sections = ['collecte', 'visible', 'photos', 'distance', 'messages', 'portabilite', 'effacement', 'cookies', 'credits'];
 }

@@ -57,6 +57,16 @@ lovematch:
   demo: ${DEMO:true}
   origines: ${ORIGINES:http://localhost:4200,http://localhost:8090}
 
+# santé du service (Render la consulte) : rien d'autre n'est exposé, aucun détail n'est donné
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: never
+
 springdoc:
   api-docs:
     path: /api/docs

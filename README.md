@@ -22,7 +22,8 @@ Réécriture complète, en **Spring Boot 4 + Angular 22**, d'un sujet d'examen J
 - **Sept langues** : choix à tout moment, langue du téléphone détectée, arabe de droite à gauche, erreurs de l'API traduites elles aussi.
 - **Installable** (PWA) : l'interface reste sur le téléphone et s'ouvre même sans réseau ; une application Android est prévue sur la même base.
 - **Sécurité des membres** : blocage (dans les deux sens), signalement avec motif, espace de **modération** (classer, avertir, suspendre, réactiver).
-- **Vie privée** : nom de famille, e-mail et position jamais montrés ; suppression du compte et de toutes ses données en un clic.
+- **Vie privée** : nom de famille, e-mail et position jamais montrés ; **export de toutes ses données** (fichier JSON, droit à la portabilité) et suppression du compte en un clic.
+- **Thème sombre** qui suit le réglage du téléphone, contrastes AA vérifiés.
 - **Démonstration** : « Essayer sans compte » (membre ou modération), 32 profils fictifs à Madagascar et dans la diaspora, portraits dessinés, paysages réels de Madagascar ([crédits](docs/CREDITS_PHOTOS.md), comme pour la liste des villes GeoNames), recréés chaque nuit.
 
 ## Le score, en cinq brins
@@ -44,7 +45,7 @@ Avant tout calcul, des **filtres obligatoires et réciproques** : genre recherch
 | Serveur | Spring Boot 4.1, Java 25, Spring Security (JWT HS256 en cookie HttpOnly SameSite=Strict, CSRF), Spring Data JPA, Flyway, WebSocket STOMP, messages traduits (MessageSource + Accept-Language), OpenAPI (`/api/docs/ui`) |
 | Base | PostgreSQL (production, Neon) ; H2 en mode PostgreSQL pour le développement et les tests |
 | Interface | Angular 22 : composants autonomes, signaux, sans zone.js, routes protégées chargées à la demande, intercepteurs, dictionnaires JSON chargés à la demande, CSS en propriétés logiques (droite à gauche), service worker |
-| Qualité | 15 tests d'acceptation sur H2 **et** PostgreSQL, vérification automatique des 7 dictionnaires, audit axe-core WCAG 2.2 AA (0 violation, y compris en arabe), CSP et Permissions-Policy |
+| Qualité | 18 tests d'acceptation sur H2 **et** PostgreSQL, 14 parcours Playwright dans un vrai navigateur (téléphone et ordinateur, contrôle axe-core à chaque étape), vérification automatique des 7 dictionnaires, audit axe-core WCAG 2.2 AA (0 violation, y compris en arabe), CSP et Permissions-Policy |
 | Déploiement | une seule image Docker (Spring Boot sert l'interface compilée), Render + Neon |
 
 Organisation du serveur (mêmes conventions que mes projets de L3) : `config`, `controller/rest`, `dto/request`, `dto/response`, `entity`, `enumeration`, `exception`, `mapper`, `repository`, `security`, `service` + `service/impl`, `util`.
@@ -74,6 +75,7 @@ cd backend
 DB_URL=jdbc:postgresql://localhost:5432/lovematch DB_USERNAME=… DB_PASSWORD=… ./mvnw test   # sur PostgreSQL
 cd ../frontend
 npm run traductions                           # les 7 dictionnaires ont les mêmes textes et variables
+npm run e2e                                   # parcours complets dans le navigateur (application lancée sur le port 8090)
 ```
 
 Les critères d'acceptation du cahier des charges sont des tests automatisés : aucun profil exclu par les préférences ou la langue (dans les deux sens), pas de conversation sans match ni après un blocage, aucune fuite du nom de famille ou de l'e-mail, score symétrique, erreurs traduites. Le détail est dans le [rapport de tests](docs/RAPPORT_DE_TESTS.md).

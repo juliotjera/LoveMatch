@@ -6,7 +6,7 @@ services:
     runtime: docker
     plan: free
     region: frankfurt          # la plus proche de Madagascar parmi les régions de Render
-    healthCheckPath: /api/auth/demo
+    healthCheckPath: /actuator/health
     branch: master             # branche déployée
     autoDeploy: true           # chaque « git push » sur master redéploie
     envVars:

@@ -22,4 +22,8 @@ public interface CorrespondanceRepository extends JpaRepository<Correspondance, 
     List<Correspondance> ouvertesDe(@Param("membre") Long membre);
 
     long countByFermeLeIsNull();
+
+    // toutes les correspondances du membre, même fermées (export de ses données)
+    @Query("select c from Correspondance c where c.membreA.id = :membre or c.membreB.id = :membre order by c.creeLe desc")
+    List<Correspondance> toutesDe(@Param("membre") Long membre);
 }

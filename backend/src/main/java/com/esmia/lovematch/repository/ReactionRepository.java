@@ -3,6 +3,7 @@ package com.esmia.lovematch.repository;
 import com.esmia.lovematch.entity.Reaction;
 import com.esmia.lovematch.enumeration.Decision;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -17,6 +18,8 @@ public interface ReactionRepository extends JpaRepository<Reaction, Long> {
     long countByAuteurIdAndDecisionAndCreeLeAfter(Long auteurId, Decision decision, LocalDateTime depuis);
 
     long countByCibleIdAndDecision(Long cibleId, Decision decision);
+
+    List<Reaction> findByAuteurIdOrderByCreeLeDesc(Long auteurId);
 
     // likes reçus en attente : le membre n'a pas encore répondu, l'auteur est actif et rien ne les bloque
     @Query("""

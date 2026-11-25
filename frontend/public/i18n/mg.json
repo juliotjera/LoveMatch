@@ -334,5 +334,9 @@
  "mdp.afficher": "Asehoy",
  "mdp.masquer": "Afeno",
  "profil.rayonPartout": "Na aiza na aiza eto an-tany",
- "genre.NON_BINAIRE": "Tsy lahy na vavy"
+ "genre.NON_BINAIRE": "Tsy lahy na vavy",
+ "profil.exporter": "Haka ny angon-drakitro",
+ "profil.exportAide": "Rakitra JSON misy ny momba anao, ny sarinao, ny fitiavanao, ireo mifanaraka aminao ary ny hafatrao.",
+ "conf.portabilite.titre": "Hitondra ny angon-drakitrao",
+ "conf.portabilite.texte": "Ao amin’ny momba anao, « Haka ny angon-drakitro » dia manome anao rakitra JSON azo vakiana misy izay rehetra tehirizin’i LoveMatch momba anao: mombamomba, sary, fitiavana, fifanarahana ary hafatra. Ny fanampin’anaran’ny hafa ihany no hita ao."
 }

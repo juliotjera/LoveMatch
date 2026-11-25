@@ -99,16 +99,16 @@ import { Quand } from '../ui/quand';
     .role {
       padding: 2px 10px;
       border-radius: 999px;
-      background: var(--jacaranda-fonce);
-      color: #fff;
+      background: var(--principal);
+      color: var(--sur-couleur);
       font-size: 0.85rem;
       font-weight: 700;
     }
     .demo {
       padding: 4px 10px;
       border-radius: 999px;
-      background: #f1e4cc;
-      color: #6b4510;
+      background: var(--ocre-pale);
+      color: var(--ocre-texte);
       font-size: 0.85rem;
       font-weight: 700;
     }

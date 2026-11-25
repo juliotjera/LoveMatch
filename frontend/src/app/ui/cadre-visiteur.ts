@@ -28,8 +28,8 @@ import { Logo } from './logo';
       min-height: 100dvh;
       padding-bottom: 40px;
       background:
-        radial-gradient(60rem 30rem at 110% -10%, #f3dcd3 0%, transparent 60%),
-        radial-gradient(50rem 30rem at -20% 0%, #e2d9f2 0%, transparent 60%),
+        radial-gradient(60rem 30rem at 110% -10%, var(--halo-2) 0%, transparent 60%),
+        radial-gradient(50rem 30rem at -20% 0%, var(--halo-1) 0%, transparent 60%),
         var(--papier);
     }
     .barre {

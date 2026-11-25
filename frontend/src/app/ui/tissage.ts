@@ -103,11 +103,11 @@ interface Brin {
     @keyframes tisser {
       from { transform: scaleX(0); }
     }
-    [data-brin='age'] { --couleur: var(--brin-age); --pale: #e4ddf1; }
-    [data-brin='distance'] { --couleur: var(--brin-distance); --pale: #d6e9ed; }
-    [data-brin='interets'] { --couleur: var(--brin-interets); --pale: #f8ddd3; }
-    [data-brin='langues'] { --couleur: var(--brin-langues); --pale: #d7e9de; }
-    [data-brin='recherche'] { --couleur: var(--brin-recherche); --pale: #f1e4cc; }
+    [data-brin='age'] { --couleur: var(--brin-age); --pale: var(--pale-age); }
+    [data-brin='distance'] { --couleur: var(--brin-distance); --pale: var(--pale-distance); }
+    [data-brin='interets'] { --couleur: var(--brin-interets); --pale: var(--pale-interets); }
+    [data-brin='langues'] { --couleur: var(--brin-langues); --pale: var(--pale-langues); }
+    [data-brin='recherche'] { --couleur: var(--brin-recherche); --pale: var(--pale-recherche); }
     .legende {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));

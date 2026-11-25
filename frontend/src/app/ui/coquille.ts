@@ -68,7 +68,7 @@ import { BoutonLangue } from './bouton-langue';
       justify-content: space-between;
       gap: 8px;
       padding: 10px 12px;
-      background: rgb(246 244 249 / 92%);
+      background: var(--voile-entete);
       backdrop-filter: blur(8px);
       border-bottom: 1px solid var(--trait);
     }
@@ -83,8 +83,8 @@ import { BoutonLangue } from './bouton-langue';
     .demo {
       padding: 3px 8px;
       border-radius: 999px;
-      background: #f1e4cc;
-      color: #6b4510;
+      background: var(--ocre-pale);
+      color: var(--ocre-texte);
       font-size: 0.78rem;
       font-weight: 700;
     }
@@ -140,7 +140,7 @@ import { BoutonLangue } from './bouton-langue';
       padding: 0 5px;
       border-radius: 999px;
       background: var(--flamboyant);
-      color: #fff;
+      color: var(--sur-couleur);
       font-size: 0.72rem;
       line-height: 20px;
       text-align: center;

@@ -2,17 +2,20 @@ package com.esmia.lovematch.controller.rest;
 
 import com.esmia.lovematch.dto.request.PreferencesRequest;
 import com.esmia.lovematch.dto.request.ProfilRequest;
+import com.esmia.lovematch.dto.response.ExportResponse;
 import com.esmia.lovematch.dto.response.MoiResponse;
 import com.esmia.lovematch.dto.response.ProfilPublicResponse;
 import com.esmia.lovematch.entity.Photo;
 import com.esmia.lovematch.security.CookieSession;
 import com.esmia.lovematch.security.SessionCourante;
+import com.esmia.lovematch.service.ExportService;
 import com.esmia.lovematch.service.PhotoService;
 import com.esmia.lovematch.service.ProfilService;
 import jakarta.validation.Valid;
 import java.time.Duration;
 import java.util.Map;
 import org.springframework.http.CacheControl;
+import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -34,12 +37,15 @@ import org.springframework.web.multipart.MultipartFile;
 public class ProfilController {
 
     private final ProfilService profils;
+    private final ExportService export;
     private final PhotoService photos;
     private final SessionCourante session;
     private final CookieSession cookie;
 
-    public ProfilController(ProfilService profils, PhotoService photos, SessionCourante session, CookieSession cookie) {
+    public ProfilController(ProfilService profils, ExportService export, PhotoService photos, SessionCourante session,
+                            CookieSession cookie) {
         this.profils = profils;
+        this.export = export;
         this.photos = photos;
         this.session = session;
         this.cookie = cookie;
@@ -58,6 +64,15 @@ public class ProfilController {
     @PutMapping("/profil/preferences")
     public MoiResponse preferences(@Valid @RequestBody PreferencesRequest demande) {
         return profils.modifierPreferences(session.id(), demande);
+    }
+
+    // droit à la portabilité : un fichier JSON avec tout ce que LoveMatch garde sur le membre
+    @GetMapping("/profil/export")
+    public ResponseEntity<ExportResponse> exporter() {
+        return ResponseEntity.ok()
+            .header(HttpHeaders.CONTENT_DISPOSITION, ContentDisposition.attachment().filename("lovematch-mes-donnees.json").build().toString())
+            .cacheControl(CacheControl.noStore())
+            .body(export.exporter(session.id()));
     }
 
     // droit à l'effacement : le compte et toutes ses données

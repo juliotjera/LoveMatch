@@ -206,7 +206,7 @@ type Etat = 'chargement' | 'pret' | 'incomplet' | 'erreur';
       line-height: 1.4;
       border-radius: 12px;
       background: var(--flamboyant-pale);
-      color: #7c2a0f;
+      color: var(--flamboyant-texte);
       font-weight: 700;
     }
     .carte {
@@ -310,8 +310,8 @@ type Etat = 'chargement' | 'pret' | 'incomplet' | 'erreur';
       margin-top: 10px;
       padding: 3px 12px;
       border-radius: 999px;
-      background: #f1e4cc;
-      color: #6b4510;
+      background: var(--ocre-pale);
+      color: var(--ocre-texte);
       font-weight: 700;
       font-size: 0.92rem;
     }
@@ -340,7 +340,7 @@ type Etat = 'chargement' | 'pret' | 'incomplet' | 'erreur';
       margin-top: 14px;
       padding: 10px;
       border-radius: 999px;
-      background: rgb(255 255 255 / 92%);
+      background: var(--voile);
       backdrop-filter: blur(6px);
       box-shadow: 0 8px 30px -10px rgb(31 24 51 / 35%);
     }
@@ -361,7 +361,7 @@ type Etat = 'chargement' | 'pret' | 'incomplet' | 'erreur';
     .photo-vide {
       aspect-ratio: 4 / 5;
       border-radius: var(--rayon-photo);
-      background: linear-gradient(100deg, var(--jacaranda-pale) 30%, #f4f0fa 50%, var(--jacaranda-pale) 70%);
+      background: linear-gradient(100deg, var(--jacaranda-pale) 30%, var(--squelette) 50%, var(--jacaranda-pale) 70%);
       background-size: 300% 100%;
       animation: lueur 1.4s linear infinite;
     }
@@ -379,7 +379,7 @@ type Etat = 'chargement' | 'pret' | 'incomplet' | 'erreur';
       border: 0;
       border-radius: 28px;
       text-align: center;
-      background: linear-gradient(180deg, #fff 55%, var(--flamboyant-pale));
+      background: linear-gradient(180deg, var(--carte) 55%, var(--flamboyant-pale));
     }
     .match::backdrop {
       background: rgb(31 24 51 / 70%);
@@ -403,7 +403,7 @@ type Etat = 'chargement' | 'pret' | 'incomplet' | 'erreur';
       --rayon: 50%;
       --format: 1;
       --taille-initiale: 2.4rem;
-      border: 4px solid #fff;
+      border: 4px solid var(--carte);
       box-shadow: 0 10px 24px -8px rgb(31 24 51 / 40%);
     }
     .rond-photo.gauche {

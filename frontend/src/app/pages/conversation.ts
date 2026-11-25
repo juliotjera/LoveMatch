@@ -243,7 +243,7 @@ interface Groupe {
       color: var(--encre-douce);
     }
     .idee {
-      color: #8a2c10;
+      color: var(--flamboyant-texte);
       font-weight: 700;
     }
     .jour {
@@ -273,8 +273,8 @@ interface Groupe {
       align-self: flex-end;
       border-radius: 18px;
       border-end-end-radius: 6px;
-      background: var(--jacaranda-fonce);
-      color: #fff;
+      background: var(--principal);
+      color: var(--sur-couleur);
     }
     .heure {
       display: block;
@@ -284,7 +284,7 @@ interface Groupe {
       color: var(--encre-douce);
     }
     .moi .heure {
-      color: #d9d0ee;
+      color: #f1ecfa;
     }
     .lu {
       align-self: flex-end;
@@ -364,8 +364,8 @@ interface Groupe {
       justify-self: start;
       padding: 3px 12px;
       border-radius: 999px;
-      background: #f1e4cc;
-      color: #6b4510;
+      background: var(--ocre-pale);
+      color: var(--ocre-texte);
       font-weight: 700;
       font-size: 0.9rem;
     }

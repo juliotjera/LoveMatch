@@ -322,5 +322,9 @@
  "mdp.afficher": "Afficher",
  "mdp.masquer": "Masquer",
  "profil.rayonPartout": "Partout dans le monde",
- "genre.NON_BINAIRE": "Non-binaire"
+ "genre.NON_BINAIRE": "Non-binaire",
+ "profil.exporter": "Télécharger mes données",
+ "profil.exportAide": "Un fichier JSON avec votre profil, vos photos, vos likes, vos matchs et vos messages.",
+ "conf.portabilite.titre": "Emporter vos données",
+ "conf.portabilite.texte": "Depuis votre profil, « Télécharger mes données » vous remet un fichier JSON lisible avec tout ce que LoveMatch garde sur vous : profil, photos, likes, matchs et messages. Des autres membres, seul le prénom y figure."
 }

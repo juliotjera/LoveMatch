@@ -43,7 +43,7 @@ import { I18n } from './core/i18n';
       gap: 10px;
       padding: 8px 8px 8px 16px;
       border-radius: 14px;
-      background: var(--encre);
+      background: var(--avis-fond);
       color: #fff;
       box-shadow: 0 12px 30px -10px rgb(31 24 51 / 50%);
       pointer-events: auto;

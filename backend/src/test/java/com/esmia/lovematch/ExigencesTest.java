@@ -229,6 +229,49 @@ class ExigencesTest {
     }
 
     @Test
+    @DisplayName("Export RGPD : toutes mes données en JSON, jamais le nom de famille ni l'e-mail des autres")
+    void exportDesDonnees() throws Exception {
+        Membre a = membres.complet("FEMME", "HOMMES", 29, "Ambatondrazaka");
+        Membre b = membres.complet("HOMME", "FEMMES", 29, "Ambatondrazaka");
+        membres.reagir(a, b, "LIKE", 201);
+        long conversation = membres.reagir(b, a, "LIKE", 201).get("correspondanceId").asLong();
+        membres.envoyer(post("/api/matchs/" + conversation + "/messages"), b, Map.of("contenu", "Message pour l'export"), 201);
+
+        var reponse = mvc.perform(get("/api/profil/export").cookie(a.session()))
+            .andExpect(status().isOk()).andReturn().getResponse();
+        assertThat(reponse.getHeader("Content-Disposition")).contains("attachment").contains("lovematch-mes-donnees.json");
+        String corps = reponse.getContentAsString(java.nio.charset.StandardCharsets.UTF_8);
+        JsonNode export = json.readTree(corps);
+        assertThat(export.get("profil").get("email").asString()).isEqualTo(a.email());
+        assertThat(export.get("reactions").size()).isEqualTo(1);
+        assertThat(export.get("matchs").get(0).get("messages").get(0).get("contenu").asString()).isEqualTo("Message pour l'export");
+        assertThat(export.get("matchs").get(0).get("messages").get(0).get("deMoi").asBoolean()).isFalse();
+        assertThat(corps).doesNotContain(b.nom()).doesNotContain(b.email());
+        mvc.perform(get("/api/profil/export")).andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @DisplayName("Santé du service accessible sans session, sans détail")
+    void sante() throws Exception {
+        String corps = mvc.perform(get("/actuator/health")).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+        assertThat(json.readTree(corps).get("status").asString()).isEqualTo("UP");
+        assertThat(corps).doesNotContain("db").doesNotContain("diskSpace");
+        mvc.perform(get("/actuator/env")).andExpect(status().isNotFound());
+    }
+
+    @Test
+    @DisplayName("Adresse inconnue : l'interface pour une page, du JSON pour l'API, toujours 404")
+    void adressesInconnues() throws Exception {
+        mvc.perform(get("/une-page-qui-n-existe-pas")).andExpect(status().isNotFound())
+            .andExpect(org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl("/index.html"));
+        // sans session, l'API ne dit même pas si l'adresse existe
+        mvc.perform(get("/api/n-existe-pas")).andExpect(status().isUnauthorized());
+        Membre m = membres.complet("FEMME", "HOMMES", 25, "Antananarivo");
+        mvc.perform(get("/api/n-existe-pas").cookie(m.session()).header("Accept-Language", "en")).andExpect(status().isNotFound())
+            .andExpect(org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath("$.message").value("Unknown address."));
+    }
+
+    @Test
     @DisplayName("Inscription réservée aux majeurs ; e-mail unique")
     void inscription() throws Exception {
         String corps = """
