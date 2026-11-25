@@ -1,0 +1,19 @@
+# serveur
+backend/target/
+backend/src/main/resources/static/
+
+# interface
+frontend/node_modules/
+frontend/dist/
+frontend/.angular/
+
+# éditeurs et système
+.idea/
+*.iml
+.vscode/
+.DS_Store
+Thumbs.db
+
+# secrets locaux
+.env
+*.env

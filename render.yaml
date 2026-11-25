@@ -1,0 +1,30 @@
+# Déploiement Render (Blueprint) : un service web Docker ; base PostgreSQL chez Neon (gratuit).
+# Render > New > Blueprint > choisir ce dépôt, puis saisir les valeurs marquées « sync: false ».
+services:
+  - type: web
+    name: lovematch
+    runtime: docker
+    plan: free
+    region: frankfurt          # la plus proche de Madagascar parmi les régions de Render
+    healthCheckPath: /api/auth/demo
+    branch: master             # branche déployée
+    autoDeploy: true           # chaque « git push » sur master redéploie
+    envVars:
+      # Neon > Connect > JDBC, sans le pooling : jdbc:postgresql://<hôte>/<base>?sslmode=require
+      - key: DB_URL
+        sync: false
+      - key: DB_USERNAME
+        sync: false
+      - key: DB_PASSWORD
+        sync: false
+      # secret de signature des sessions, généré par Render
+      - key: JETON_SECRET
+        generateValue: true
+      - key: COOKIE_SECURISE
+        value: "true"
+      # adresse publique du site (WebSocket) : à corriger si Render attribue un autre nom
+      - key: ORIGINES
+        value: https://lovematch.onrender.com
+      # site de démonstration : boutons « Essayer sans compte », profils fictifs recréés chaque nuit
+      - key: DEMO
+        value: "true"

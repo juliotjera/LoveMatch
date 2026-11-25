@@ -1,0 +1,68 @@
+# Par défaut : base H2 en mémoire (mode PostgreSQL), démonstration activée.
+# En production, tout passe par des variables d'environnement (voir le README).
+server:
+  port: ${PORT:8090}
+  forward-headers-strategy: framework
+  compression:
+    enabled: true
+    mime-types: text/html,text/css,application/javascript,text/javascript,application/json,application/manifest+json,image/svg+xml
+  # manifeste de l'application installable (PWA)
+  mime-mappings:
+    webmanifest: application/manifest+json
+  servlet:
+    session:
+      tracking-modes: cookie
+
+spring:
+  application:
+    name: lovematch
+  # erreurs de l'API dans la langue de l'en-tête Accept-Language (fr, mg, en, es, zh, hi, ar), français sinon
+  messages:
+    basename: messages
+    encoding: UTF-8
+    fallback-to-system-locale: false
+  web:
+    locale: fr
+    locale-resolver: accept-header
+  datasource:
+    url: ${DB_URL:jdbc:h2:mem:lovematch;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;DEFAULT_NULL_ORDERING=HIGH}
+    username: ${DB_USERNAME:sa}
+    password: ${DB_PASSWORD:}
+    hikari:
+      maximum-pool-size: ${DB_POOL:5}
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: Indian/Antananarivo
+  flyway:
+    enabled: true
+  servlet:
+    multipart:
+      max-file-size: 8MB
+      max-request-size: 9MB
+  jackson:
+    default-property-inclusion: non_null
+
+lovematch:
+  jeton:
+    # À remplacer en production (au moins 32 caractères) : JETON_SECRET
+    secret: ${JETON_SECRET:developpement-uniquement-changer-ce-secret-en-production}
+    duree-heures: ${JETON_DUREE_HEURES:72}
+  cookie:
+    securise: ${COOKIE_SECURISE:false}
+  demo: ${DEMO:true}
+  origines: ${ORIGINES:http://localhost:4200,http://localhost:8090}
+
+springdoc:
+  api-docs:
+    path: /api/docs
+  swagger-ui:
+    path: /api/docs/ui
+
+logging:
+  level:
+    org.hibernate.SQL: warn

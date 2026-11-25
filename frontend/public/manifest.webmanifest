@@ -1,0 +1,19 @@
+{
+  "name": "LoveMatch",
+  "short_name": "LoveMatch",
+  "description": "Rencontres à Madagascar avec un score de compatibilité expliqué, en sept langues.",
+  "start_url": "/decouvrir",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f6f4f9",
+  "theme_color": "#3e2c6e",
+  "lang": "fr",
+  "categories": ["social", "lifestyle"],
+  "icons": [
+    { "src": "icones/icone-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icones/icone-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icones/icone-masquable-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "icones/icone-masquable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

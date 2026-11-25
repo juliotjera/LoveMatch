@@ -1,0 +1,22 @@
+{
+  "$schema": "./node_modules/@angular/service-worker/config/schema.json",
+  "index": "/index.html",
+  "assetGroups": [
+    {
+      "name": "application",
+      "installMode": "prefetch",
+      "resources": {
+        "files": ["/favicon.svg", "/index.html", "/manifest.webmanifest", "/*.css", "/*.js"]
+      }
+    },
+    {
+      "name": "polices-icones-langues",
+      "installMode": "lazy",
+      "updateMode": "prefetch",
+      "resources": {
+        "files": ["/media/**", "/icones/**", "/i18n/*.json"]
+      }
+    }
+  ],
+  "navigationUrls": ["/**", "!/api/**", "!/ws/**", "!/**/*.*", "!/**/*__*", "!/**/*__*/**"]
+}
