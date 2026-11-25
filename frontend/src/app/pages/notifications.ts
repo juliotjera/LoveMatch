@@ -57,7 +57,8 @@ import { Quand } from '../ui/quand';
     }
     .liste {
       display: grid;
-      gap: 8px;
+      gap: 0;
+      border-top: 1px solid var(--trait);
       margin: 0;
       padding: 0;
       list-style: none;
@@ -66,14 +67,15 @@ import { Quand } from '../ui/quand';
       display: flex;
       align-items: center;
       gap: 12px;
-      padding: 12px 14px;
-      background: var(--carte);
-      border-radius: 14px;
-      border: 1.5px solid transparent;
+      padding: 12px 8px;
+      border-bottom: 1px solid var(--trait);
     }
+    /* non lue : texte en gras sur fond teinté, comme une boîte de réception */
     li.non-lue {
-      border-color: var(--jacaranda-pale);
-      box-shadow: inset 4px 0 0 var(--jacaranda);
+      background: var(--jacaranda-pale);
+    }
+    li.non-lue .texte {
+      font-weight: 700;
     }
     .pastille-type {
       display: grid;

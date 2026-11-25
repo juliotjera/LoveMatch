@@ -135,7 +135,7 @@ interface Groupe {
     .conversation {
       display: grid;
       grid-template-rows: auto 1fr auto;
-      height: calc(100dvh - 61px - var(--barre-basse));
+      height: calc(100dvh - 61px - var(--haut-sur) - var(--barre-basse));
       max-width: 820px;
       margin: 0 auto;
     }
@@ -204,8 +204,9 @@ interface Groupe {
       min-width: 240px;
       padding: 6px;
       background: var(--carte);
-      border-radius: 14px;
-      box-shadow: 0 16px 40px -12px rgb(31 24 51 / 35%);
+      border: 1px solid var(--trait);
+      border-radius: 10px;
+      box-shadow: var(--ombre-fenetre);
     }
     .choix button {
       min-height: 44px;
@@ -249,8 +250,8 @@ interface Groupe {
     .jour {
       align-self: center;
       margin: 12px 0 6px;
-      padding: 2px 12px;
-      border-radius: 999px;
+      padding: 2px 10px;
+      border-radius: 6px;
       background: var(--jacaranda-pale);
       color: var(--jacaranda-fonce);
       font-size: 0.82rem;
@@ -260,10 +261,10 @@ interface Groupe {
       align-self: flex-start;
       max-width: min(78%, 520px);
       padding: 9px 13px 6px;
-      border-radius: 18px;
-      border-end-start-radius: 6px;
+      border-radius: 14px;
+      border-end-start-radius: 4px;
       background: var(--carte);
-      box-shadow: 0 1px 2px rgb(31 24 51 / 8%);
+      border: 1px solid var(--trait);
     }
     .bulle p {
       white-space: pre-wrap;
@@ -271,8 +272,8 @@ interface Groupe {
     }
     .bulle.moi {
       align-self: flex-end;
-      border-radius: 18px;
-      border-end-end-radius: 6px;
+      border-radius: 14px;
+      border-end-end-radius: 4px;
       background: var(--principal);
       color: var(--sur-couleur);
     }
@@ -307,7 +308,7 @@ interface Groupe {
       max-height: 160px;
       padding: 12px 16px;
       border: 1.5px solid var(--trait-fort);
-      border-radius: 24px;
+      border-radius: 12px;
       resize: none;
       background: var(--papier);
       line-height: 1.4;
@@ -340,7 +341,7 @@ interface Groupe {
       max-height: calc(100dvh - 24px);
       padding: 16px 16px 20px;
       border: 0;
-      border-radius: 24px;
+      border-radius: 16px;
     }
     .fiche[open] {
       display: grid;
@@ -362,8 +363,8 @@ interface Groupe {
     }
     .cherche {
       justify-self: start;
-      padding: 3px 12px;
-      border-radius: 999px;
+      padding: 3px 8px;
+      border-radius: 4px;
       background: var(--ocre-pale);
       color: var(--ocre-texte);
       font-weight: 700;
@@ -371,7 +372,7 @@ interface Groupe {
     }
     @media (min-width: 900px) {
       .conversation {
-        height: calc(100dvh - 61px);
+        height: calc(100dvh - 61px - var(--haut-sur));
         border-inline: 1px solid var(--trait);
       }
     }

@@ -2,6 +2,8 @@
 
 [![Tests](https://github.com/juliotjera/LoveMatch/actions/workflows/tests.yml/badge.svg?branch=master)](https://github.com/juliotjera/LoveMatch/actions/workflows/tests.yml)
 
+**En ligne : https://lovematch-65g1.onrender.com** (bouton « Essayer sans compte » ; l'hébergement gratuit met environ une minute à se réveiller après un moment d'inactivité).
+
 Application de rencontres née à Madagascar et ouverte au monde, avec un **score de compatibilité expliqué** : chaque suggestion montre sa note sur 100 et la part de chacun de ses cinq critères. On ne vous propose que des personnes avec qui la discussion est possible : préférences réciproques, distance acceptée des deux côtés, **au moins une langue en commun**. Interface en **sept langues** (malagasy, français, English, español, 中文, हिन्दी, العربية), **31 800 villes du monde**, installable sur le téléphone.
 
 Réécriture complète, en **Spring Boot 4 + Angular 22**, d'un sujet d'examen JSP de L2 que j'avais réalisé seul. Le sujet lui-même a été refait : voir le [cahier des charges, version 2](docs/CAHIER_DES_CHARGES.md).
@@ -84,7 +86,7 @@ Les critères d'acceptation du cahier des charges sont des tests automatisés : 
 
 1. Neon : créer un projet, copier la chaîne **JDBC** (sans le pooling).
 2. Render : New > Blueprint > ce dépôt (le fichier `render.yaml` décrit le service), puis renseigner `DB_URL`, `DB_USERNAME`, `DB_PASSWORD`. Le secret des sessions est généré par Render.
-3. Si Render attribue une autre adresse que `lovematch.onrender.com`, corriger `ORIGINES` (WebSocket).
+3. Mettre l'adresse attribuée par Render dans `ORIGINES` (WebSocket) et dans les balises Open Graph de `frontend/src/index.html`.
 
 Variables reconnues : `DB_URL`, `DB_USERNAME`, `DB_PASSWORD`, `JETON_SECRET`, `JETON_DUREE_HEURES`, `COOKIE_SECURISE`, `ORIGINES`, `DEMO`, `PORT`.
 

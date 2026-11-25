@@ -1,0 +1,20 @@
+{
+  "name": "lovematch-android",
+  "private": true,
+  "description": "Application Android de LoveMatch : une coquille Capacitor qui ouvre le site en ligne.",
+  "type": "module",
+  "scripts": {
+    "icones": "python scripts/icones.py && capacitor-assets generate --android --iconBackgroundColor #3e2c6e --iconBackgroundColorDark #3e2c6e --splashBackgroundColor #3e2c6e --splashBackgroundColorDark #3e2c6e --logoSplashScale 0.3 && python scripts/icones-anciennes.py",
+    "sync": "cap sync android",
+    "android:apk": "cap sync android && cd android && gradlew assembleDebug",
+    "android:release": "cap sync android && cd android && gradlew assembleRelease && node ../scripts/copier-apk.mjs"
+  },
+  "dependencies": {
+    "@capacitor/android": "^8.6.2",
+    "@capacitor/core": "^8.6.2"
+  },
+  "devDependencies": {
+    "@capacitor/assets": "^4.0.0",
+    "@capacitor/cli": "^8.6.2"
+  }
+}

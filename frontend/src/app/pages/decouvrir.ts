@@ -194,7 +194,7 @@ type Etat = 'chargement' | 'pret' | 'incomplet' | 'erreur';
       width: auto;
       min-height: 44px;
       padding: 6px 12px;
-      border-radius: 999px;
+      border-radius: 10px;
     }
     .recus {
       display: flex;
@@ -204,7 +204,7 @@ type Etat = 'chargement' | 'pret' | 'incomplet' | 'erreur';
       padding: 8px 12px;
       font-size: 0.92rem;
       line-height: 1.4;
-      border-radius: 12px;
+      border-radius: 8px;
       background: var(--flamboyant-pale);
       color: var(--flamboyant-texte);
       font-weight: 700;
@@ -212,17 +212,13 @@ type Etat = 'chargement' | 'pret' | 'incomplet' | 'erreur';
     .carte {
       display: grid;
       gap: 18px;
-      background: var(--carte);
-      border-radius: 28px;
-      padding: 12px;
-      box-shadow: var(--ombre-carte);
-      animation: arrivee 0.32s ease-out;
+      animation: arrivee 0.25s ease-out;
     }
     .carte:focus {
       outline: none;
     }
     @keyframes arrivee {
-      from { opacity: 0; transform: translateY(8px); }
+      from { opacity: 0; }
     }
     .galerie {
       position: relative;
@@ -308,8 +304,8 @@ type Etat = 'chargement' | 'pret' | 'incomplet' | 'erreur';
     .cherche {
       display: inline-block;
       margin-top: 10px;
-      padding: 3px 12px;
-      border-radius: 999px;
+      padding: 3px 8px;
+      border-radius: 4px;
       background: var(--ocre-pale);
       color: var(--ocre-texte);
       font-weight: 700;
@@ -332,17 +328,15 @@ type Etat = 'chargement' | 'pret' | 'incomplet' | 'erreur';
     }
     .decision {
       position: sticky;
-      bottom: calc(var(--barre-basse) + 10px);
+      bottom: var(--barre-basse);
       z-index: 5;
       display: grid;
       grid-template-columns: 1fr 1.4fr;
       gap: 10px;
-      margin-top: 14px;
-      padding: 10px;
-      border-radius: 999px;
-      background: var(--voile);
-      backdrop-filter: blur(6px);
-      box-shadow: 0 8px 30px -10px rgb(31 24 51 / 35%);
+      margin: 16px -16px 0;
+      padding: 10px 16px 12px;
+      background: var(--papier);
+      border-top: 1px solid var(--trait);
     }
     .rond {
       min-height: 56px;
@@ -377,9 +371,10 @@ type Etat = 'chargement' | 'pret' | 'incomplet' | 'erreur';
       width: min(420px, calc(100% - 24px));
       padding: 28px 22px 24px;
       border: 0;
-      border-radius: 28px;
+      border-radius: 16px;
       text-align: center;
-      background: linear-gradient(180deg, var(--carte) 55%, var(--flamboyant-pale));
+      background: var(--carte);
+      box-shadow: var(--ombre-fenetre);
     }
     .match::backdrop {
       background: rgb(31 24 51 / 70%);
@@ -404,7 +399,6 @@ type Etat = 'chargement' | 'pret' | 'incomplet' | 'erreur';
       --format: 1;
       --taille-initiale: 2.4rem;
       border: 4px solid var(--carte);
-      box-shadow: 0 10px 24px -8px rgb(31 24 51 / 40%);
     }
     .rond-photo.gauche {
       left: 0;
@@ -433,8 +427,7 @@ type Etat = 'chargement' | 'pret' | 'incomplet' | 'erreur';
     @media (min-width: 760px) {
       .carte {
         grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
-        padding: 14px;
-        gap: 26px;
+        gap: 32px;
       }
       .infos {
         padding: 16px 12px 12px 0;
@@ -457,8 +450,10 @@ type Etat = 'chargement' | 'pret' | 'incomplet' | 'erreur';
         margin-top: 10px;
       }
       .decision {
-        width: min(460px, 100%);
-        margin-inline: auto;
+        margin-inline: 0;
+        padding: 12px 0 16px;
+        grid-template-columns: minmax(0, 220px) minmax(0, 260px);
+        justify-content: end;
       }
       .raccourcis {
         display: block;

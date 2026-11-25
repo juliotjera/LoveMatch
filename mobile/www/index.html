@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#3e2c6e">
+<title>LoveMatch</title>
+<style>
+    :root { color-scheme: dark; }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; height: 100%; }
+    body {
+        display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px;
+        padding: 24px; text-align: center; color: #fff;
+        font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans", sans-serif;
+        background: #3e2c6e;
+    }
+    h1 { margin: 0; font-size: 26px; letter-spacing: -0.02em; }
+    p { margin: 0; max-width: 30ch; line-height: 1.5; color: rgba(255,255,255,.8); }
+    .barre { width: 180px; height: 4px; margin: 18px auto 0; border-radius: 4px; background: rgba(255,255,255,.15); overflow: hidden; }
+    .barre span { display: block; width: 40%; height: 100%; border-radius: 4px; background: #e4572e; animation: aller 1.3s ease-in-out infinite; }
+    @keyframes aller { from { transform: translateX(-100%); } to { transform: translateX(260%); } }
+    button {
+        min-height: 48px; margin-top: 18px; padding: 0 28px; border: 0; border-radius: 10px; font: inherit; font-weight: 700;
+        color: #fff; background: #c9421b;
+    }
+    [hidden] { display: none !important; }
+    @media (prefers-reduced-motion: reduce) { .barre span { animation: none; width: 100%; } }
+</style>
+</head>
+<body>
+    <svg viewBox="0 0 40 40" width="84" height="84" aria-hidden="true">
+        <circle cx="15" cy="20" r="12" fill="#c9a8e8"/>
+        <circle cx="25" cy="20" r="12" fill="#e4572e"/>
+        <path d="M20 9.6a12 12 0 0 1 0 20.8a12 12 0 0 1 0-20.8z" fill="#8c283c"/>
+    </svg>
+    <h1>LoveMatch</h1>
+
+    <div id="attente" role="status">
+        <p id="attente-texte"></p>
+        <div class="barre" aria-hidden="true"><span></span></div>
+    </div>
+
+    <div id="erreur" hidden role="alert">
+        <p id="erreur-texte"></p>
+        <button type="button" id="reessayer"></button>
+    </div>
+
+<script>
+    // L'interface et l'API sont sur le site en ligne : l'application l'ouvre dès que le serveur répond.
+    // L'hébergement gratuit endort le serveur après 15 minutes d'inactivité : on patiente le temps du réveil.
+    const SITE = 'https://lovematch-65g1.onrender.com';
+
+    // mêmes sept langues que le site ; celle du téléphone si elle est proposée, sinon le français
+    const TEXTES = {
+        fr: ['Connexion… Au premier lancement de la journée, cela peut prendre jusqu’à une minute.', 'Pas de connexion Internet. Vérifiez le Wi-Fi ou les données mobiles, puis réessayez.', 'Le serveur ne répond pas pour l’instant. Réessayez dans un moment.', 'Réessayer'],
+        mg: ['Mampifandray… Amin’ny fanokafana voalohany isan’andro dia mety haharitra hatramin’ny iray minitra.', 'Tsy misy Internet. Hamarino ny Wi-Fi na ny angona finday, dia andramo indray.', 'Tsy mamaly ny mpizara amin’izao. Andramo indray afaka kelikely.', 'Andramo indray'],
+        en: ['Connecting… The first launch of the day can take up to a minute.', 'No Internet connection. Check Wi-Fi or mobile data, then try again.', 'The server is not responding right now. Try again in a moment.', 'Try again'],
+        es: ['Conectando… El primer inicio del día puede tardar hasta un minuto.', 'Sin conexión a Internet. Revisa el Wi-Fi o los datos móviles y vuelve a intentarlo.', 'El servidor no responde por ahora. Inténtalo de nuevo en un momento.', 'Reintentar'],
+        zh: ['正在连接…每天第一次打开可能需要一分钟左右。', '没有网络连接。请检查 Wi-Fi 或移动数据后重试。', '服务器暂时没有响应，请稍后重试。', '重试'],
+        hi: ['कनेक्ट हो रहा है… दिन की पहली शुरुआत में एक मिनट तक लग सकता है।', 'इंटरनेट कनेक्शन नहीं है। वाई-फ़ाई या मोबाइल डेटा जाँचें, फिर कोशिश करें।', 'सर्वर अभी जवाब नहीं दे रहा। थोड़ी देर में फिर कोशिश करें।', 'फिर कोशिश करें'],
+        ar: ['جارٍ الاتصال… قد يستغرق التشغيل الأول في اليوم حتى دقيقة.', 'لا يوجد اتصال بالإنترنت. تحقّق من الواي فاي أو بيانات الجوال ثم أعد المحاولة.', 'الخادم لا يستجيب حاليًا. أعد المحاولة بعد لحظة.', 'أعد المحاولة'],
+    };
+    const langue = (navigator.languages || [navigator.language]).map((l) => l.toLowerCase().split('-')[0]).find((l) => TEXTES[l]) || 'fr';
+    const [ATTENTE, HORS_LIGNE, SILENCE, REESSAYER] = TEXTES[langue];
+    document.documentElement.lang = langue;
+    document.documentElement.dir = langue === 'ar' ? 'rtl' : 'ltr';
+    document.getElementById('attente-texte').textContent = ATTENTE;
+    document.getElementById('reessayer').textContent = REESSAYER;
+
+    const attente = document.getElementById('attente');
+    const erreur = document.getElementById('erreur');
+
+    function echec(message) {
+        document.getElementById('erreur-texte').textContent = message;
+        attente.hidden = true;
+        erreur.hidden = false;
+    }
+
+    async function ouvrir() {
+        erreur.hidden = true;
+        attente.hidden = false;
+        if (!navigator.onLine) {
+            return echec(HORS_LIGNE);
+        }
+        const delai = new AbortController();
+        const minuteur = setTimeout(() => delai.abort(), 90000);
+        try {
+            // réponse opaque (autre origine) : seule compte la réussite de la requête
+            await fetch(SITE + '/actuator/health', { mode: 'no-cors', cache: 'no-store', signal: delai.signal });
+            location.replace(SITE + '/');
+        } catch (e) {
+            echec(navigator.onLine ? SILENCE : HORS_LIGNE);
+        } finally {
+            clearTimeout(minuteur);
+        }
+    }
+
+    document.getElementById('reessayer').addEventListener('click', ouvrir);
+    ouvrir();
+</script>
+</body>
+</html>

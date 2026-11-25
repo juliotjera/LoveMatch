@@ -69,10 +69,14 @@
   --police-titre: 'Bricolage Grotesque Variable', var(--polices-ecritures), 'Segoe UI', system-ui, sans-serif;
   --police-texte: 'Chiffres LoveMatch', 'Atkinson Hyperlegible Next Variable', var(--polices-ecritures), 'Segoe UI', system-ui, sans-serif;
 
-  --rayon-photo: 22px;
-  --rayon-panneau: 14px;
-  --ombre-carte: 0 1px 2px rgb(31 24 51 / 6%), 0 12px 32px -12px rgb(62 44 110 / 22%);
+  /* rayons selon le rôle : photos 16, panneaux 12, boutons et champs 10, étiquettes 6 ; ombres réservées aux fenêtres */
+  --rayon-photo: 16px;
+  --rayon-panneau: 12px;
+  --ombre-carte: 0 1px 2px rgb(31 24 51 / 6%);
+  --ombre-fenetre: 0 18px 48px -16px rgb(31 24 51 / 35%);
   --barre-basse: 68px;
+  /* hauteur de la barre d'état quand la page occupe tout l'écran (application Android, iPhone) ; 0 ailleurs */
+  --haut-sur: env(safe-area-inset-top, 0px);
 }
 
 /* thème sombre : suit le réglage du téléphone ou de l'ordinateur (contrastes vérifiés, au moins 4,5:1 pour le texte) */
@@ -120,7 +124,8 @@
     --pale-langues: #1e3127;
     --pale-recherche: #3a2e18;
 
-    --ombre-carte: 0 1px 2px rgb(0 0 0 / 40%), 0 12px 32px -12px rgb(0 0 0 / 60%);
+    --ombre-carte: 0 1px 2px rgb(0 0 0 / 40%);
+    --ombre-fenetre: 0 18px 48px -16px rgb(0 0 0 / 70%);
   }
 }
 
@@ -232,16 +237,12 @@ textarea {
   min-height: 48px;
   padding: 0 22px;
   border: 1.5px solid transparent;
-  border-radius: 999px;
+  border-radius: 10px;
   font-weight: 700;
   font-size: 1rem;
   text-decoration: none;
   cursor: pointer;
-  transition: background-color 0.15s, border-color 0.15s, transform 0.1s;
-}
-
-.btn:active {
-  transform: scale(0.98);
+  transition: background-color 0.15s, border-color 0.15s;
 }
 
 .btn:disabled {
@@ -415,8 +416,8 @@ textarea.saisie {
   gap: 6px;
   min-height: 36px;
   padding: 4px 14px;
-  border: 1.5px solid var(--trait);
-  border-radius: 999px;
+  border: 1px solid var(--trait-fort);
+  border-radius: 8px;
   background: var(--carte);
   font-size: 0.95rem;
 }
@@ -458,7 +459,7 @@ label.pastille input {
   background: var(--carte);
   border-radius: var(--rayon-panneau);
   padding: 20px;
-  box-shadow: var(--ombre-carte);
+  border: 1px solid var(--trait);
 }
 
 .page {

@@ -27,10 +27,7 @@ import { Logo } from './logo';
       display: block;
       min-height: 100dvh;
       padding-bottom: 40px;
-      background:
-        radial-gradient(60rem 30rem at 110% -10%, var(--halo-2) 0%, transparent 60%),
-        radial-gradient(50rem 30rem at -20% 0%, var(--halo-1) 0%, transparent 60%),
-        var(--papier);
+      background: var(--papier);
     }
     .barre {
       display: flex;
@@ -38,7 +35,7 @@ import { Logo } from './logo';
       align-items: center;
       width: min(1120px, 100%);
       margin: 0 auto;
-      padding: 14px 16px;
+      padding: calc(14px + var(--haut-sur)) 16px 14px;
     }
     .barre a {
       text-decoration: none;
@@ -48,8 +45,8 @@ import { Logo } from './logo';
       margin: 12px auto 0;
       padding: 28px 22px;
       background: var(--carte);
-      border-radius: 22px;
-      box-shadow: var(--ombre-carte);
+      border: 1px solid var(--trait);
+      border-radius: 12px;
       display: grid;
       gap: 8px;
     }

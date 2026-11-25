@@ -74,7 +74,7 @@ import { Quand } from '../ui/quand';
       list-style: none;
       background: var(--carte);
       border-radius: var(--rayon-panneau);
-      box-shadow: var(--ombre-carte);
+      border: 1px solid var(--trait);
       overflow: hidden;
     }
     .ligne {

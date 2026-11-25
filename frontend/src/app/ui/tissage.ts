@@ -79,7 +79,7 @@ interface Brin {
       position: relative;
       flex-basis: 0;
       overflow: hidden;
-      border-radius: 4px;
+      border-radius: 2px;
       background:
         repeating-linear-gradient(-45deg, transparent 0 5px, rgb(255 255 255 / 55%) 5px 7px),
         var(--pale);
@@ -114,14 +114,22 @@ interface Brin {
       gap: 10px 16px;
       margin: 4px 0 0;
     }
-    .legende div {
-      border-inline-start: 4px solid var(--couleur);
-      padding-inline-start: 10px;
-    }
     dt {
+      display: flex;
+      align-items: center;
+      gap: 6px;
       font-size: 0.85rem;
       font-weight: 700;
       color: var(--encre-douce);
+    }
+    /* légende : le carré reprend la couleur du brin dans la bande */
+    dt::before {
+      content: '';
+      width: 10px;
+      height: 10px;
+      border-radius: 2px;
+      background: var(--couleur);
+      flex: none;
     }
     dd {
       margin: 0;

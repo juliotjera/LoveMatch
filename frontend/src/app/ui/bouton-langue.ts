@@ -30,7 +30,7 @@ import { Icone } from './icone';
       min-height: 40px;
       padding: 0 12px;
       border: 1.5px solid var(--trait-fort);
-      border-radius: 999px;
+      border-radius: 8px;
       background: var(--carte);
       color: var(--jacaranda-fonce);
       font-weight: 700;

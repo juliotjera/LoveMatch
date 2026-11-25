@@ -22,9 +22,9 @@ services:
         generateValue: true
       - key: COOKIE_SECURISE
         value: "true"
-      # adresse publique du site (WebSocket) : à corriger si Render attribue un autre nom
+      # adresse publique du site (WebSocket)
       - key: ORIGINES
-        value: https://lovematch.onrender.com
+        value: https://lovematch-65g1.onrender.com
       # site de démonstration : boutons « Essayer sans compte », profils fictifs recréés chaque nuit
       - key: DEMO
         value: "true"

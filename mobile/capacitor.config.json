@@ -1,0 +1,20 @@
+{
+  "appId": "mg.lovematch.app",
+  "appName": "LoveMatch",
+  "webDir": "www",
+  "appendUserAgent": "LoveMatchApp",
+  "server": {
+    "androidScheme": "https",
+    "allowNavigation": ["lovematch-65g1.onrender.com"]
+  },
+  "android": {
+    "backgroundColor": "#3e2c6e"
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 800,
+      "backgroundColor": "#3e2c6e",
+      "showSpinner": false
+    }
+  }
+}

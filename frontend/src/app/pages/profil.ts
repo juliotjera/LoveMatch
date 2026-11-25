@@ -220,11 +220,11 @@ const MAX_PHOTOS = 4;
       margin-bottom: 20px;
       padding: 18px 20px;
       border-radius: var(--rayon-panneau);
-      background: var(--principal);
-      color: var(--sur-couleur);
+      border: 1px solid var(--trait);
+      background: var(--jacaranda-pale);
     }
     .etape p {
-      color: #e3dcf3;
+      color: var(--encre-douce);
     }
     .etape ul {
       display: grid;
@@ -239,7 +239,7 @@ const MAX_PHOTOS = 4;
       width: 14px;
       height: 14px;
       margin-inline-end: 10px;
-      border: 2px solid #c9b9ec;
+      border: 2px solid var(--trait-fort);
       border-radius: 50%;
       vertical-align: -2px;
     }
@@ -284,7 +284,7 @@ const MAX_PHOTOS = 4;
       inset-inline-start: 8px;
       top: 8px;
       padding: 2px 10px;
-      border-radius: 999px;
+      border-radius: 4px;
       background: rgb(31 24 51 / 78%);
       color: #fff;
       font-size: 0.8rem;

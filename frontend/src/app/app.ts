@@ -29,7 +29,7 @@ import { I18n } from './core/i18n';
     .avis {
       position: fixed;
       left: 50%;
-      top: 70px;
+      top: calc(70px + var(--haut-sur));
       z-index: 50;
       display: grid;
       gap: 8px;
@@ -42,10 +42,10 @@ import { I18n } from './core/i18n';
       align-items: center;
       gap: 10px;
       padding: 8px 8px 8px 16px;
-      border-radius: 14px;
+      border-radius: 10px;
       background: var(--avis-fond);
       color: #fff;
-      box-shadow: 0 12px 30px -10px rgb(31 24 51 / 50%);
+      box-shadow: var(--ombre-fenetre);
       pointer-events: auto;
       animation: apparaitre 0.2s ease-out;
     }

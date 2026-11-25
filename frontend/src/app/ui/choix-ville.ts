@@ -54,8 +54,8 @@ let compteur = 0;
       list-style: none;
       background: var(--carte);
       border: 1.5px solid var(--trait);
-      border-radius: 12px;
-      box-shadow: 0 16px 40px -12px rgb(31 24 51 / 35%);
+      border-radius: 10px;
+      box-shadow: var(--ombre-fenetre);
     }
     li {
       display: grid;

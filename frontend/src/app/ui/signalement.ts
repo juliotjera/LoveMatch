@@ -54,8 +54,8 @@ import { MotifSignalement } from '../core/modeles';
       max-height: calc(100dvh - 24px);
       padding: 24px 20px;
       border: 0;
-      border-radius: 20px;
-      box-shadow: 0 30px 80px -20px rgb(31 24 51 / 45%);
+      border-radius: 14px;
+      box-shadow: var(--ombre-fenetre);
     }
     dialog::backdrop {
       background: rgb(31 24 51 / 55%);

@@ -67,9 +67,8 @@ import { BoutonLangue } from './bouton-langue';
       align-items: center;
       justify-content: space-between;
       gap: 8px;
-      padding: 10px 12px;
-      background: var(--voile-entete);
-      backdrop-filter: blur(8px);
+      padding: calc(10px + var(--haut-sur)) 12px 10px;
+      background: var(--papier);
       border-bottom: 1px solid var(--trait);
     }
     .marque {
@@ -82,7 +81,7 @@ import { BoutonLangue } from './bouton-langue';
     }
     .demo {
       padding: 3px 8px;
-      border-radius: 999px;
+      border-radius: 4px;
       background: var(--ocre-pale);
       color: var(--ocre-texte);
       font-size: 0.78rem;
@@ -117,11 +116,21 @@ import { BoutonLangue } from './bouton-langue';
       font-size: 0.78rem;
       font-weight: 700;
     }
+    .onglets li {
+      position: relative;
+    }
+    /* onglet actif : trait en haut de l'onglet et couleur, comme une barre d'onglets native */
     .onglets a.actif {
       color: var(--jacaranda-fonce);
     }
-    .onglets a.actif .pictogramme {
-      background: var(--jacaranda-pale);
+    .onglets a.actif::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      inset-inline: 22%;
+      height: 3px;
+      border-radius: 0 0 3px 3px;
+      background: var(--jacaranda-fonce);
     }
     .pictogramme {
       position: relative;
@@ -129,7 +138,6 @@ import { BoutonLangue } from './bouton-langue';
       place-items: center;
       width: 52px;
       height: 30px;
-      border-radius: 999px;
     }
     .badge {
       position: absolute;
@@ -165,8 +173,8 @@ import { BoutonLangue } from './bouton-langue';
       }
       .onglets {
         position: sticky;
-        top: 64px;
-        height: calc(100dvh - 64px);
+        top: calc(64px + var(--haut-sur));
+        height: calc(100dvh - 64px - var(--haut-sur));
         border-top: 0;
         border-inline-end: 1px solid var(--trait);
         background: transparent;
@@ -187,7 +195,7 @@ import { BoutonLangue } from './bouton-langue';
         gap: 10px;
         height: 48px;
         padding: 0 10px;
-        border-radius: 12px;
+        border-radius: 8px;
         font-size: 1rem;
       }
       .onglets a:hover,
@@ -196,6 +204,9 @@ import { BoutonLangue } from './bouton-langue';
       }
       .onglets a.actif {
         background: var(--jacaranda-pale);
+      }
+      .onglets a.actif::before {
+        display: none;
       }
       .pictogramme {
         width: 30px;

@@ -86,7 +86,7 @@ import { Quand } from '../ui/quand';
       justify-content: space-between;
       flex-wrap: wrap;
       gap: 10px;
-      padding: 10px 16px;
+      padding: calc(10px + var(--haut-sur)) 16px 10px;
       background: var(--carte);
       border-bottom: 1px solid var(--trait);
     }
@@ -98,7 +98,7 @@ import { Quand } from '../ui/quand';
     }
     .role {
       padding: 2px 10px;
-      border-radius: 999px;
+      border-radius: 4px;
       background: var(--principal);
       color: var(--sur-couleur);
       font-size: 0.85rem;
@@ -106,7 +106,7 @@ import { Quand } from '../ui/quand';
     }
     .demo {
       padding: 4px 10px;
-      border-radius: 999px;
+      border-radius: 4px;
       background: var(--ocre-pale);
       color: var(--ocre-texte);
       font-size: 0.85rem;
@@ -118,17 +118,15 @@ import { Quand } from '../ui/quand';
     .chiffres {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 10px;
+      gap: 14px 0;
       margin: 0 0 28px;
     }
     .chiffres div {
-      padding: 14px 16px;
-      background: var(--carte);
-      border-radius: 12px;
-      border-top: 4px solid var(--jacaranda);
+      padding: 4px 16px;
+      border-inline-start: 1px solid var(--trait);
     }
-    .chiffres .alerte-chiffre {
-      border-top-color: var(--flamboyant);
+    .chiffres .alerte-chiffre dd {
+      color: var(--flamboyant-texte);
     }
     dt {
       color: var(--encre-douce);

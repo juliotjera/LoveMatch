@@ -114,7 +114,7 @@ import { Tissage } from '../ui/tissage';
       gap: 12px;
       width: min(1120px, 100%);
       margin: 0 auto;
-      padding: 14px 16px;
+      padding: calc(14px + var(--haut-sur)) 16px 14px;
     }
     .outils {
       display: flex;
@@ -179,9 +179,8 @@ import { Tissage } from '../ui/tissage';
       gap: 6px 14px;
       padding: 16px;
       background: var(--carte);
-      border-radius: 26px;
-      box-shadow: var(--ombre-carte);
-      transform: rotate(-1.2deg);
+      border: 1px solid var(--trait);
+      border-radius: 16px;
       max-width: 520px;
     }
     /* téléphone : petit portrait rond à côté du nom, score sur toute la largeur */
@@ -234,12 +233,18 @@ import { Tissage } from '../ui/tissage';
     .brins li {
       display: grid;
       gap: 6px;
-      padding: 16px 18px 16px 20px;
-      background: var(--carte);
-      border-radius: 14px;
-      border-start-start-radius: 4px;
-      border-end-start-radius: 4px;
-      border-inline-start: 8px solid var(--couleur);
+      padding-top: 14px;
+      border-top: 1px solid var(--trait);
+    }
+    /* le carré reprend la couleur du brin dans la bande du score */
+    .brins h3::before {
+      content: '';
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      margin-inline-end: 8px;
+      border-radius: 2px;
+      background: var(--couleur);
     }
     .brins h3 span {
       font-family: var(--police-texte);
@@ -260,25 +265,11 @@ import { Tissage } from '../ui/tissage';
       display: grid;
       gap: 12px;
       margin: 24px 0 28px;
-      padding: 0;
-      list-style: none;
+      padding-inline-start: 1.2em;
       max-width: 62ch;
     }
-    .regles li {
-      position: relative;
-      padding-inline-start: 30px;
-    }
-    .regles li::before {
-      content: '';
-      position: absolute;
-      inset-inline-start: 0;
-      top: 0.35em;
-      width: 18px;
-      height: 12px;
-      background:
-        radial-gradient(circle at 6px 6px, var(--jacaranda) 6px, transparent 6.5px),
-        radial-gradient(circle at 12px 6px, var(--flamboyant-vif) 6px, transparent 6.5px);
-      mix-blend-mode: multiply;
+    .regles li::marker {
+      color: var(--jacaranda);
     }
     .pied {
       width: min(1120px, 100%);
@@ -300,7 +291,7 @@ import { Tissage } from '../ui/tissage';
         max-width: 560px;
       }
       .portrait {
-        border-radius: 18px;
+        border-radius: 12px;
         aspect-ratio: 3 / 4;
         grid-row: auto;
       }
